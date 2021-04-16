@@ -1,0 +1,76 @@
+{
+  "name": "wiki",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ayaka": "file:../../ayaka/build",
+    "classnames": "^2.3.1",
+    "meiko": "file:../../meiko/build",
+    "merge": "^1.2.1",
+    "nano-css": "^5.2.1",
+    "node-sass": "^5.0.0",
+    "oidc-client": "^1.11.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^4.0.3",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.41",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-helmet": "^6.1.1",
+    "@types/react-router-dom": "^5.1.7",
+    "ajv": "^6.9.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^7.24.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.7.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "nan": "^2.14.1",
+    "prettier": "^2.2.1",
+    "typescript": "^3.7.5"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "scripts": {
+    "start": "rimraf ./build && react-scripts start",
+    "build": "react-scripts build",
+    "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src/"
+  },
+  "lint-staged": {
+    "{,src}/**/*.{ts,tsx,js}": [
+      "npm run lint"
+    ],
+    "{,src}/**/*.{tsx,js}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run test"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
