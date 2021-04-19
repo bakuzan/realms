@@ -1,0 +1,134 @@
+// @import './_extensions.scss';
+@import './_variables.scss';
+// @import './_mixins.scss';
+
+// Colours here...
+$white: #fff;
+$blue: #00f;
+$red: #f00;
+
+:root {
+  --base-background: #{$white};
+  --base-background-hover: #{darken($white, 10%)};
+
+  --base-colour: #000;
+  --base-colour-hover: #{lighten(#000, 10%)};
+
+  --primary-colour: #{$blue};
+  --primary-colour-hover: #{lighten($blue, 10%)};
+
+  --primary-contrast: #{$white};
+  --primary-contrast-hover: #{darken($white, 10%)};
+
+  //   --accent-colour: #{$pink};
+  //   --accent-colour-hover: #{darken($pink, 10%)};
+
+  //   --accent-contrast: #{$blue};
+  //   --accent-contrast-hover: #{lighten($blue, 10%)};
+
+  --highlight: #{$red};
+  --faded-colour: #999;
+
+  --danger-colour: #{$red};
+  --danger-colour-hover: #{darken($red, 10%)};
+}
+
+input {
+  background: inherit;
+  color: inherit;
+}
+
+.theme {
+  --scroll-top-button--background: var(--primary-colour);
+  --scroll-top-button--background-hover: var(--primary-colour-hover);
+  --scroll-top-button--colour: var(--primary-contrast);
+
+  background-color: var(--base-background);
+  color: var(--base-colour);
+
+  .loading-bouncer__orb {
+    background-color: var(--primary-colour);
+  }
+
+  .dropdown-menu__menu {
+    background-color: var(--base-background);
+    color: var(--base-colour);
+  }
+  .dropdown-menu__arrow {
+    border-bottom-color: var(--base-background);
+  }
+
+  .button--standard,
+  .button--icon {
+    background-color: var(--base-background);
+    color: var(--base-contrast);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--base-background-hover);
+      color: var(--base-contrast-hover);
+    }
+  }
+
+  .button--primary {
+    background-color: var(--primary-colour);
+    color: var(--primary-contrast);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--primary-colour-hover);
+      color: var(--primary-contrast-hover);
+    }
+  }
+
+  .button--accent {
+    background-color: var(--accent-colour);
+    color: var(--accent-contrast);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--accent-colour-hover);
+      color: var(--accent-contrast-hover);
+    }
+  }
+
+  .has-float-label input:focus,
+  .has-float-label select:focus {
+    border-color: var(--primary-colour);
+  }
+
+  .autocomplete__menu {
+    background-color: var(--base-background);
+  }
+
+  .autocomplete-suggestion--active {
+    border-color: var(--primary-colour);
+  }
+
+  .scroll-top::before {
+    font-size: 2.8rem;
+  }
+
+  .accordion__heading {
+    border-color: var(--primary-colour);
+  }
+
+  .tickbox input::before,
+  .accordion__toggle {
+    color: var(--base-colour);
+  }
+
+  .tickbox input:checked::before {
+    color: var(--primary-colour);
+  }
+  .radio__input:checked::after {
+    color: var(--accent-colour);
+  }
+
+  .error-block {
+    color: var(--danger-colour);
+  }
+}

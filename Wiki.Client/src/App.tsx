@@ -1,28 +1,55 @@
-import './styles/index.scss';
-import React, { Component } from 'react';
-import { Route } from 'react-router';
+import classNames from 'classnames';
+import React from 'react';
+import { Route, Switch } from 'react-router';
+import { Helmet } from 'react-helmet';
 
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
+import ScrollTopButton from 'meiko/ScrollTopButton';
+import { useGlobalStyles } from 'meiko/hooks/useGlobalStyles';
 
-import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
+import NavMenu from './components/NavMenu';
+
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+
+// import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/ApiAuthorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/ApiAuthorization/ApiAuthorizationConstants';
+import { AppName } from './constants';
 
-export default class App extends Component {
-  static displayName = App.name;
+import './styles/index.scss';
+import './styles/theme.scss';
 
-  render() {
-    return (
-      <Layout>
-        <Route exact path="/" component={Home} />
-        <AuthorizeRoute path="/fetch-data" component={FetchData} />
-        <Route
-          path={ApplicationPaths.ApiAuthorizationPrefix}
-          component={ApiAuthorizationRoutes}
-        />
-      </Layout>
-    );
-  }
+function App() {
+  useGlobalStyles();
+
+  return (
+    <div
+      className={classNames('theme', {
+        'theme--alt': false,
+        'theme--default': true
+      })}
+    >
+      <Helmet defaultTitle={AppName} titleTemplate={`%s | ${AppName}`} />
+      <NavMenu />
+
+      <main>
+        <Switch>
+          <Route exact path="/" component={Home} />
+
+          {/* <AuthorizeRoute path="/fetch-data" component={FetchData} /> */}
+
+          {/* Below here are routes that should come last, and shouldn't be messed with */}
+          <Route
+            path={ApplicationPaths.ApiAuthorizationPrefix}
+            component={ApiAuthorizationRoutes}
+          />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </main>
+
+      <ScrollTopButton />
+    </div>
+  );
 }
+
+export default App;
