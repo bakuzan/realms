@@ -11,16 +11,11 @@ export class NavMenu extends Component<any> {
   render() {
     return (
       <header>
-        <NavLink to="/">Wiki</NavLink>
+        <NavLink to="/">Realms</NavLink>
         <ul>
           <li>
             <NavLink className="text-dark" to="/">
               Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className="text-dark" to="/counter">
-              Counter
             </NavLink>
           </li>
           <li>

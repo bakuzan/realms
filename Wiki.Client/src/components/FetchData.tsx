@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import authService from './ApiAuthorization/AuthorizeService';
+
+import sendRequest from 'src/utils/sendRequest';
 
 interface FetchDataState {
   forecasts: any[];
@@ -62,11 +63,8 @@ export class FetchData extends Component<any, FetchDataState> {
   }
 
   async populateWeatherData() {
-    const token = await authService.getAccessToken();
-    const response = await fetch('weatherforecast', {
-      headers: !token ? {} : { Authorization: `Bearer ${token}` }
-    });
-    const data = await response.json();
+    const data = await sendRequest('weatherforecast');
+
     this.setState({ forecasts: data, loading: false });
   }
 }

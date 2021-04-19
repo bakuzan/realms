@@ -234,7 +234,7 @@ export class AuthorizeService {
     let response = await fetch(
       ApplicationPaths.ApiAuthorizationClientConfigurationUrl
     );
-    console.log('API SIGN IN ? ', response);
+
     if (!response.ok) {
       throw new Error(`Could not load settings for '${ApplicationName}'`);
     }
