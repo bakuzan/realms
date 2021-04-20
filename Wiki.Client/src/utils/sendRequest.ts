@@ -1,3 +1,5 @@
+import isObject from 'ayaka/isObject';
+
 import {
   ApplicationPaths,
   QueryParameterNames
@@ -16,11 +18,15 @@ function uintToString(uintArray: Uint8Array | undefined) {
   return decodeURIComponent(escape(encodedString));
 }
 
-export default async function sendRequest(
+export type ApiResponse<T> =
+  | { data: T; errorMessages: []; success: true }
+  | { data: null; errorMessages: string[]; success: false };
+
+export default async function sendRequest<T = any>(
   url: string,
   options: RequestInit = {},
   ignoreUnauthorised: boolean = false
-) {
+): Promise<ApiResponse<T>> {
   try {
     const sameSite = !url.startsWith('http');
     const reqHeaders = options.headers ?? {};
@@ -69,17 +75,18 @@ export default async function sendRequest(
         // );
       }
 
-      return {
-        error,
-        success: false
-      };
+      return { data: null, errorMessages: [error], success: false };
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    return isObject(data) && data.hasOwnProperty('success')
+      ? data
+      : { data, errorMessages: [], success: true };
   } catch (error) {
     console.log('Request error', error);
     // alertService.showError(`Request failed.`, error.message);
 
-    return { error, success: false };
+    return { data: null, errorMessages: [error.message], success: false };
   }
 }

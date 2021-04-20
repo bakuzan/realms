@@ -29,7 +29,7 @@ namespace Wiki.Controllers
 
 
         [HttpGet]
-        public async Task<UserModel> Get()
+        public async Task<UserViewModel> Get()
         {
             return await _userService.GetCurrentUser(User);
         }

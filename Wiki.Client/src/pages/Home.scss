@@ -1,0 +1,13 @@
+.realms {
+  gap: 5px;
+  grid-auto-flow: column dense;
+  grid-auto-rows: 1fr;
+}
+
+.realm {
+  padding: 2px;
+
+  &__link {
+    // todo
+  }
+}

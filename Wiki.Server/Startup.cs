@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using Wiki.Mapping;
+using Wiki.Services;
 
 namespace Wiki
 {
@@ -57,6 +60,25 @@ namespace Wiki
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.Configure<RazorViewEngineOptions>(o => o.ViewLocationExpanders.Add(new WikiViewLocationExpander()));
+
+
+            // Services
+            services.AddSingleton<IConfiguration>(Configuration);
+            services.AddScoped<IUserService, UserService>()
+                    .AddScoped<IRealmService, RealmService>()
+                    .AddScoped<IRealmDataService, RealmDataService>();
+
+            // services.AddHttpClient<IContentService, ContentService>();
+
+            // Mapping
+            var mapping = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new UserProfile());
+                mc.AddProfile(new RealmProfile());
+            });
+
+            IMapper mapper = mapping.CreateMapper();
+            services.AddSingleton(mapper);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

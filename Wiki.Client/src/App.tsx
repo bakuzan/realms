@@ -9,6 +9,7 @@ import { useGlobalStyles } from 'meiko/hooks/useGlobalStyles';
 import HeaderBar from './components/Header/HeaderBar';
 
 import Home from './pages/Home';
+import Realm from './pages/Realm';
 import NotFound from './pages/NotFound';
 
 // import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
@@ -35,6 +36,7 @@ function App() {
       <main>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/:realmCode" component={Realm} />
 
           {/* <AuthorizeRoute path="/fetch-data" component={FetchData} /> */}
 

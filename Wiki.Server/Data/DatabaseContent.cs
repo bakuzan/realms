@@ -14,11 +14,17 @@ namespace Wiki.Data
         }
 
         // Database entities here
+        public DbSet<Realm> Realms { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Realm>()
+                        .HasOne(x => x.ApplicationUser)
+                        .WithMany(x => x.Realms)
+                        .HasForeignKey(x => x.ApplicationUserId);
 
         }
 

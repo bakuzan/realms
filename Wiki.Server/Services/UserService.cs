@@ -22,11 +22,11 @@ namespace Wiki.Services
             _signInManager = signInManager;
         }
 
-        public async Task<UserModel> GetCurrentUser(ClaimsPrincipal claim)
+        public async Task<UserViewModel> GetCurrentUser(ClaimsPrincipal claim)
         {
             var userId = claim.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await _userManager.FindByIdAsync(userId);
-            var model = _mapper.Map<UserModel>(user);
+            var model = _mapper.Map<UserViewModel>(user);
 
             return model;
         }

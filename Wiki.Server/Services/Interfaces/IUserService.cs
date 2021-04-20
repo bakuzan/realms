@@ -6,6 +6,6 @@ namespace Wiki.Services
 {
     public interface IUserService
     {
-        Task<UserModel> GetCurrentUser(ClaimsPrincipal claim);
+        Task<UserViewModel> GetCurrentUser(ClaimsPrincipal claim);
     }
 }
