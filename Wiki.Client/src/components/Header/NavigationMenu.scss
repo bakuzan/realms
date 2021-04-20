@@ -1,0 +1,11 @@
+.nav-menu {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 0;
+  list-style-type: none;
+
+  &__link {
+    padding: 5px;
+  }
+}

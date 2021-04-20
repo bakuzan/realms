@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import ScrollTopButton from 'meiko/ScrollTopButton';
 import { useGlobalStyles } from 'meiko/hooks/useGlobalStyles';
 
-import NavMenu from './components/NavMenu';
+import HeaderBar from './components/Header/HeaderBar';
 
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
@@ -30,7 +30,7 @@ function App() {
       })}
     >
       <Helmet defaultTitle={AppName} titleTemplate={`%s | ${AppName}`} />
-      <NavMenu />
+      <HeaderBar />
 
       <main>
         <Switch>

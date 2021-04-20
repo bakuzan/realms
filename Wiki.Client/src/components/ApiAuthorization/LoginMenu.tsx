@@ -74,12 +74,12 @@ export class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     return (
       <Fragment>
         <li>
-          <NavLink className="text-dark" to={profilePath}>
+          <NavLink className="nav-menu__link" to={profilePath}>
             Hello {userName}
           </NavLink>
         </li>
         <li>
-          <NavLink className="text-dark" to={logoutPath}>
+          <NavLink className="nav-menu__link" to={logoutPath}>
             Logout
           </NavLink>
         </li>
@@ -91,12 +91,12 @@ export class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
     return (
       <Fragment>
         <li>
-          <NavLink className="text-dark" to={registerPath}>
+          <NavLink className="nav-menu__link" to={registerPath}>
             Register
           </NavLink>
         </li>
         <li>
-          <NavLink className="text-dark" to={loginPath}>
+          <NavLink className="nav-menu__link" to={loginPath}>
             Login
           </NavLink>
         </li>

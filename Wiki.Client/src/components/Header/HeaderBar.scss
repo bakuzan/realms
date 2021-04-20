@@ -1,0 +1,14 @@
+.application-header {
+  position: relative;
+  padding: 0 5px;
+  box-sizing: border-box;
+
+  &__links-block {
+    display: flex;
+    height: 100%;
+  }
+
+  &__title {
+    margin: auto 0;
+  }
+}

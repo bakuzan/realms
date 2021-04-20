@@ -6,7 +6,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h1>Realms</h1>
+        <h2>Realms</h2>
         placeholder for the list of 'relams' within the application
       </div>
     );

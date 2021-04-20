@@ -4,8 +4,10 @@
 
 // Colours here...
 $white: #fff;
-$blue: #00f;
+$off-white: #f1f1f1;
+$onyx: #1f1f1f;
 $red: #f00;
+$tyrian: #66023c;
 
 :root {
   --base-background: #{$white};
@@ -14,11 +16,11 @@ $red: #f00;
   --base-colour: #000;
   --base-colour-hover: #{lighten(#000, 10%)};
 
-  --primary-colour: #{$blue};
-  --primary-colour-hover: #{lighten($blue, 10%)};
+  --primary-colour: #{$off-white};
+  --primary-colour-hover: #{darken($off-white, 10%)};
 
-  --primary-contrast: #{$white};
-  --primary-contrast-hover: #{darken($white, 10%)};
+  --primary-contrast: #{$onyx};
+  --primary-contrast-hover: #{lighten($onyx, 10%)};
 
   //   --accent-colour: #{$pink};
   //   --accent-colour-hover: #{darken($pink, 10%)};
@@ -26,7 +28,7 @@ $red: #f00;
   //   --accent-contrast: #{$blue};
   //   --accent-contrast-hover: #{lighten($blue, 10%)};
 
-  --highlight: #{$red};
+  --highlight: #{$tyrian};
   --faded-colour: #999;
 
   --danger-colour: #{$red};
@@ -45,6 +47,21 @@ input {
 
   background-color: var(--base-background);
   color: var(--base-colour);
+
+  .application-header {
+    background-color: var(--primary-colour);
+    color: var(--primary-contrast);
+
+    &::after {
+      box-shadow: 0px 2px 5px -3px var(--highlight);
+      content: '';
+      position: absolute;
+      left: -10px;
+      right: 0;
+      bottom: 0px;
+      height: 8px;
+    }
+  }
 
   .loading-bouncer__orb {
     background-color: var(--primary-colour);
