@@ -1,9 +1,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { NavLink } from 'react-router-dom';
 
-import LoadingBouncer from 'meiko/LoadingBouncer';
-
-import RequestMessage from 'src/components/RequestMessage';
+import GuardResponseState from 'src/components/GuardResponseState';
+import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 
 import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
@@ -18,38 +18,25 @@ function RealmPage(props: PageProps<{ realmCode: string }>) {
     [realmCode]
   );
 
-  if (state.loading) {
-    return <LoadingBouncer />;
-  }
-
-  if (state.error) {
-    return (
-      <RequestMessage
-        text="Failed to send request"
-        error={state.error.message}
-      />
-    );
-  } else if (state.value && !state.value.success) {
-    return (
-      <RequestMessage
-        text="Failed to send request"
-        error={state.value.errorMessages[0]}
-      />
-    );
-  } else if (!state.value) {
-    return null;
-  }
-
-  console.log('Realm Page > ', props, state);
-
-  const response = state.value.data;
-  const realmName = response.name;
-
   return (
-    <div>
-      <Helmet title={`${realmName} Hub`} />
-      <h2>{realmName} Hub</h2>
-    </div>
+    <GuardResponseState state={state}>
+      {(response) => {
+        console.log('Realm Page > ', props, state);
+        const realmName = response.name;
+
+        return (
+          <div>
+            <Helmet title={`${realmName} Hub`} />
+            <header>
+              <h2>{realmName} Hub</h2>
+              <GuardWithAuthorisation ownerUserId={response.realmOwnerUserId}>
+                <NavLink to={`${props.match.url}/edit`}>Edit</NavLink>
+              </GuardWithAuthorisation>
+            </header>
+          </div>
+        );
+      }}
+    </GuardResponseState>
   );
 }
 

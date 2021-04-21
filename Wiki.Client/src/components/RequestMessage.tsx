@@ -16,7 +16,7 @@ nano.put('.rlm-request-message__text', {
 });
 
 interface RequestMessageProps {
-  error: string;
+  error?: Error;
   text: string;
   children?: React.ReactNode;
 }
@@ -25,7 +25,9 @@ function RequestMessage({ error, text, children }: RequestMessageProps) {
   return (
     <div className="rlm-request-message">
       <div className="rlm-request-message__text">{text}</div>
-      <div className="rlm-request-message__error">{error}</div>
+      {error && (
+        <div className="rlm-request-message__error">{error.message}</div>
+      )}
       {children}
     </div>
   );

@@ -8,8 +8,10 @@ import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 
 import { Realm } from 'src/interfaces/Realm';
+import { AppName } from 'src/constants';
 
 import './Home.scss';
+import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 
 function Home(props: any) {
   const state = useAsync(
@@ -20,9 +22,16 @@ function Home(props: any) {
   console.log('Home Hub > ', props, state);
 
   return (
-    <div>
+    <div className="home">
       <Helmet title="Hub" />
-      <h2>Realms Hub</h2>
+      <header className="home__header">
+        <h2>{AppName} Hub</h2>
+        <GuardWithAuthorisation>
+          <NavLink className="add-realm" to={`/new-realm`}>
+            Add Realm
+          </NavLink>
+        </GuardWithAuthorisation>
+      </header>
       <ResponseGrid
         data={state}
         filterFn={(filter: string) => (x: Realm) =>
