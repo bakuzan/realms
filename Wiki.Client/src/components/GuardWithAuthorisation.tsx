@@ -22,8 +22,8 @@ function GuardWithAuthorisation(props: GuardWithAuthorisationProps) {
 
     return () => authService.unsubscribe(unsubId);
   }, []);
-  console.log('GwA', props, user);
-  if (!user || (props.ownerUserId && user.userId !== props.ownerUserId)) {
+
+  if (!user || (props.ownerUserId && user.sub !== props.ownerUserId)) {
     return null;
   }
 

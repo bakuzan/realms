@@ -10,9 +10,11 @@ import HeaderBar from './components/Header/HeaderBar';
 
 import Home from './pages/Home';
 import Realm from './pages/Realm';
+import RealmCreator from './pages/Realm/RealmCreator';
+import RealmEditor from './pages/Realm/RealmEditor';
 import NotFound from './pages/NotFound';
 
-// import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
+import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/ApiAuthorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/ApiAuthorization/ApiAuthorizationConstants';
 import { AppName } from './constants';
@@ -36,9 +38,13 @@ function App() {
       <main>
         <Switch>
           <Route exact path="/" component={Home} />
+          <AuthorizeRoute exact path="/new-realm" component={RealmCreator} />
+          <AuthorizeRoute
+            exact
+            path="/:realmCode/edit"
+            component={RealmEditor}
+          />
           <Route exact path="/:realmCode" component={Realm} />
-
-          {/* <AuthorizeRoute path="/fetch-data" component={FetchData} /> */}
 
           {/* Below here are routes that should come last, and shouldn't be messed with */}
           <Route

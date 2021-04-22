@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Wiki.Services;
@@ -33,6 +34,14 @@ namespace Wiki.Controllers
         public async Task<RealmResponse> Get(string code)
         {
             return await _realmService.GetRealmByCode(User, code);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("create")]
+        public async Task<RealmCreateResponse> Create(RealmCreateRequest request)
+        {
+            return await _realmService.CreateRealm(User, request);
         }
 
 

@@ -5,3 +5,17 @@ main {
   min-height: calc(100vh - 10px - #{$header--height});
   padding: 5px;
 }
+
+.page {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.button-group.button-group {
+  justify-content: flex-start;
+  margin: 25px 0;
+  box-sizing: border-box;
+}

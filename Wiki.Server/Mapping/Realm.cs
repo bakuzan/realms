@@ -11,6 +11,7 @@ namespace Wiki.Mapping
             CreateMap<Realm, RealmViewModel>()
                 .ForMember(d => d.RealmOwnerUserId, s => s.MapFrom(x => x.ApplicationUserId));
 
+            CreateMap<RealmCreateRequest, Realm>();
 
         }
     }

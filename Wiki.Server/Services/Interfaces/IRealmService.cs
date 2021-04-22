@@ -9,6 +9,7 @@ namespace Wiki.Services
     {
         Task<List<RealmViewModel>> GetRealms(ClaimsPrincipal claim);
         Task<RealmResponse> GetRealmByCode(ClaimsPrincipal claim, string code);
+        Task<RealmCreateResponse> CreateRealm(ClaimsPrincipal claim, RealmCreateRequest request);
 
     }
 }
