@@ -1,0 +1,10 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.page-grid {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}

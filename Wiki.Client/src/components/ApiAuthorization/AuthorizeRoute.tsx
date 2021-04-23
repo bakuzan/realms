@@ -63,8 +63,10 @@ export default class AuthoriseRoute extends Component<
     if (!ready) {
       return <div></div>;
     } else {
-      const { component, ...rest } = this.props;
-      const PageComponent = component as React.ComponentClass;
+      const { component, render, ...rest } = this.props;
+      const PageComponent = (render
+        ? render
+        : component) as React.ComponentClass;
 
       return (
         <Route

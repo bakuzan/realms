@@ -1,11 +1,10 @@
 .realm-creator {
-  .error-list,
-  .form-break {
+  .error-list {
     padding: 5px;
     margin: 25px 0;
-  }
 
-  .error-list__error {
-    white-space: pre;
+    &__error {
+      white-space: pre;
+    }
   }
 }

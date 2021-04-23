@@ -1,0 +1,14 @@
+.separator {
+  padding: 5px;
+  margin: 5px 0;
+
+  &__line {
+    border: 1px dashed var(--primary-colour);
+    margin-block-start: 0.25em;
+    margin-block-end: 0.25em;
+  }
+
+  &__title {
+    margin: 0;
+  }
+}

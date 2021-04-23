@@ -4,10 +4,13 @@ import { Helmet } from 'react-helmet';
 import Form from 'meiko/Form';
 import Grid from 'meiko/Grid';
 import Tickbox from 'meiko/Tickbox';
+import ClearableInput from 'meiko/ClearableInput';
+
+import TitleSeparator from 'src/components/TitleSeparator';
+
+import sendRequest from 'src/utils/sendRequest';
 
 import { PageProps } from 'src/interfaces/PageProps';
-import ClearableInput from 'meiko/ClearableInput';
-import sendRequest from 'src/utils/sendRequest';
 
 import './RealmCreator.scss';
 
@@ -65,7 +68,7 @@ function RealmCreator(props: RealmCreatorProps) {
     console.log('CREATED..? >', response);
 
     if (response.success) {
-      props.history.push(`/${response.data.code}`);
+      props.history.push(`/${response.data.code}/edit`);
     } else {
       dispatch({
         type: 'SubmitFailure',
@@ -99,11 +102,7 @@ function RealmCreator(props: RealmCreatorProps) {
           }
         />
 
-        <div className="form-break">
-          <hr className="form-break__line" />
-          <p className="form-break__title">Permissions</p>
-          <hr className="form-break__line" />
-        </div>
+        <TitleSeparator title="Permissions" />
 
         <Tickbox
           id="isAuthenticationRestricted"
