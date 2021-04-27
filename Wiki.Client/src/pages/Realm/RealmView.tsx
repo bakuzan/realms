@@ -13,7 +13,7 @@ interface RealmViewProps extends PageProps<{ realmCode: string }> {
   data: RealmView;
 }
 
-function RealmView(props: RealmViewProps) {
+function RealmViewPage(props: RealmViewProps) {
   const { data } = props;
   const realmName = data.name;
 
@@ -50,4 +50,4 @@ function RealmView(props: RealmViewProps) {
   );
 }
 
-export default RealmView;
+export default RealmViewPage;

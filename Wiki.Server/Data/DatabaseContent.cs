@@ -32,15 +32,13 @@ namespace Wiki.Data
                       .HasForeignKey(x => x.ApplicationUserId);
 
                 entity.HasMany(x => x.Tags)
-                      .WithMany(x => x.Realms)
-                      .UsingEntity(x => x.ToTable("RealmTag"));
+                      .WithMany(x => x.Realms);
             });
 
             modelBuilder.Entity<Tag>(entity =>
             {
                 entity.HasMany(x => x.Realms)
-                      .WithMany(x => x.Tags)
-                      .UsingEntity(x => x.ToTable("RealmTag"));
+                      .WithMany(x => x.Tags);
             });
 
 
