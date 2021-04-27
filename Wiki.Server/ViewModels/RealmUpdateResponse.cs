@@ -1,6 +1,6 @@
 namespace Wiki.ViewModels
 {
-    public class RealmCreateResponse : BaseResponse<RealmCreateResponse>
+    public class RealmUpdateResponse : BaseResponse<RealmUpdateResponse>
     {
         public RealmItemViewModel Data { get; set; }
     }

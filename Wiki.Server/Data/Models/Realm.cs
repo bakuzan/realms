@@ -1,10 +1,14 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Wiki.Data.Models;
 
 namespace Wiki.Data
 {
     public class Realm : BaseEntity<Realm>
     {
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Code { get; set; }
         public bool IsAuthenticationRestricted { get; set; }
         public bool IsPrivate { get; set; }
@@ -12,5 +16,8 @@ namespace Wiki.Data
         // Relations
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+        public ICollection<Tag> Tags { get; } = new List<Tag>();
+
     }
 }

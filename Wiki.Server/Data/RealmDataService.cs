@@ -28,7 +28,9 @@ namespace Wiki.Data
 
         public async Task<Realm> GetRealmAsync(string code)
         {
-            return await _context.Realms.FirstOrDefaultAsync(x => x.Code == code);
+            return await _context.Realms
+                .Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Code == code);
         }
 
     }

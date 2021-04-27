@@ -15,16 +15,34 @@ namespace Wiki.Data
 
         // Database entities here
         public DbSet<Realm> Realms { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Realm>()
-                        .HasOne(x => x.ApplicationUser)
-                        .WithMany(x => x.Realms)
-                        .HasForeignKey(x => x.ApplicationUserId);
+            modelBuilder.Entity<Realm>(entity =>
+            {
+                entity.HasIndex(u => u.Code)
+                      .IsUnique();
+
+                entity.HasOne(x => x.ApplicationUser)
+                      .WithMany(x => x.Realms)
+                      .HasForeignKey(x => x.ApplicationUserId);
+
+                entity.HasMany(x => x.Tags)
+                      .WithMany(x => x.Realms)
+                      .UsingEntity(x => x.ToTable("RealmTag"));
+            });
+
+            modelBuilder.Entity<Tag>(entity =>
+            {
+                entity.HasMany(x => x.Realms)
+                      .WithMany(x => x.Tags)
+                      .UsingEntity(x => x.ToTable("RealmTag"));
+            });
+
 
         }
 

@@ -24,7 +24,7 @@ namespace Wiki.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IEnumerable<RealmViewModel>> GetAll()
+        public async Task<IEnumerable<RealmItemViewModel>> GetAll()
         {
             return await _realmService.GetRealms(User);
         }
@@ -44,6 +44,13 @@ namespace Wiki.Controllers
             return await _realmService.CreateRealm(User, request);
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("update")]
+        public async Task<RealmUpdateResponse> Update(RealmUpdateRequest request)
+        {
+            return await _realmService.UpdateRealm(User, request);
+        }
 
     }
 }

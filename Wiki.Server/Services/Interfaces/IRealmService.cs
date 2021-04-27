@@ -7,9 +7,10 @@ namespace Wiki.Services
 {
     public interface IRealmService
     {
-        Task<List<RealmViewModel>> GetRealms(ClaimsPrincipal claim);
+        Task<List<RealmItemViewModel>> GetRealms(ClaimsPrincipal claim);
         Task<RealmResponse> GetRealmByCode(ClaimsPrincipal claim, string code);
         Task<RealmCreateResponse> CreateRealm(ClaimsPrincipal claim, RealmCreateRequest request);
+        Task<RealmUpdateResponse> UpdateRealm(ClaimsPrincipal claim, RealmUpdateRequest request);
 
     }
 }

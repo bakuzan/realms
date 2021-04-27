@@ -30,6 +30,7 @@ namespace Wiki
         {
             var dbConnectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DatabaseContext>(opts => opts.UseSqlite(dbConnectionString));
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Identity stuff
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -75,6 +76,7 @@ namespace Wiki
             {
                 mc.AddProfile(new UserProfile());
                 mc.AddProfile(new RealmProfile());
+                mc.AddProfile(new TagProfile());
             });
 
             IMapper mapper = mapping.CreateMapper();
@@ -93,7 +95,7 @@ namespace Wiki
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {

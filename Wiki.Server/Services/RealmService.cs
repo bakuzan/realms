@@ -24,14 +24,14 @@ namespace Wiki.Services
             _mapper = mapper;
         }
 
-        public async Task<List<RealmViewModel>> GetRealms(ClaimsPrincipal claim)
+        public async Task<List<RealmItemViewModel>> GetRealms(ClaimsPrincipal claim)
         {
             var user = await _userService.GetCurrentUser(claim);
             var userId = user == null ? string.Empty : user.Id;
 
             var realms = await _realmDataService.GetRealms(userId);
 
-            return _mapper.Map<List<RealmViewModel>>(realms);
+            return _mapper.Map<List<RealmItemViewModel>>(realms);
         }
 
         public async Task<RealmResponse> GetRealmByCode(ClaimsPrincipal claim, string code)
@@ -81,7 +81,55 @@ namespace Wiki.Services
             _realmDataService.SetToPersist(realm);
             await _realmDataService.SaveAsync();
 
-            response.Data = _mapper.Map<RealmViewModel>(realm);
+            response.Data = _mapper.Map<RealmItemViewModel>(realm);
+            return response;
+        }
+
+        public async Task<RealmUpdateResponse> UpdateRealm(ClaimsPrincipal claim, RealmUpdateRequest request)
+        {
+            var response = new RealmUpdateResponse();
+            var user = await _userService.GetCurrentUser(claim);
+            var userId = user == null ? string.Empty : user.Id;
+
+            var realm = await _realmDataService.GetAsync<Realm>(request.Id, x => x.Tags);
+            if (realm == null)
+            {
+                response.ErrorMessages.Add("Realm not found.");
+                return response;
+            }
+            else if (realm.IsPrivate && realm.ApplicationUserId != userId)
+            {
+                response.ErrorMessages.Add($"Realm(code: {realm.Code}) is a private realm.");
+                return response;
+            }
+
+            _mapper.Map(request, realm);
+
+            if (string.IsNullOrEmpty(realm.Name))
+            {
+                response.ErrorMessages.Add("Name is required.");
+                return response;
+            }
+
+            // Update tags
+            var oldTagIds = request.TagList
+                .Where(x => x.Id.HasValue)
+                .Select(x => x.Id.Value);
+
+            foreach (var t in realm.Tags)
+            {
+                if (!oldTagIds.Contains(t.Id))
+                {
+                    realm.Tags.Remove(t);
+                }
+            }
+
+            await ProcessAndPersistNewTags(realm, request.TagList);
+
+            _realmDataService.SetToPersist(realm);
+            await _realmDataService.SaveAsync();
+
+            response.Data = _mapper.Map<RealmItemViewModel>(realm);
             return response;
         }
 
@@ -101,6 +149,45 @@ namespace Wiki.Services
             }
 
             return code;
+        }
+
+        private async Task ProcessAndPersistNewTags(Realm realm, List<TagInputModel> tagList)
+        {
+            var inputs = tagList.Where(x => !x.Id.HasValue
+                && !string.IsNullOrEmpty(x.Name.ToLower().Trim()));
+
+            if (!inputs.Any())
+                return;
+
+            var existingTags = await _realmDataService.GetListAsync<Tag>(x =>
+                x.TagScope == Enums.TagScope.Realm);
+
+            foreach (var input in inputs)
+            {
+                var name = input.Name.ToLower().Trim();
+                var code = input.Name.GenerateSlug();
+
+                if (realm.Tags.Any(t => t.Code == code))
+                    continue;
+
+                var tag = existingTags.FirstOrDefault(x => x.Code == code);
+                if (tag == null)
+                {
+                    var newTag = new Tag
+                    {
+                        Name = name,
+                        Code = code,
+                        TagScope = Enums.TagScope.Realm
+                    };
+
+                    _realmDataService.SetToPersist(newTag);
+                    realm.Tags.Add(newTag);
+                }
+                else
+                {
+                    realm.Tags.Add(tag);
+                }
+            }
         }
 
         #endregion

@@ -5,13 +5,13 @@ import { Switch, Route } from 'react-router-dom';
 import AuthorizeRoute from 'src/components/ApiAuthorization/AuthorizeRoute';
 import GuardResponseState from 'src/components/GuardResponseState';
 
-import RealmView from './RealmView';
+import RealmViewPage from './RealmView';
 import RealmEditor from './RealmEditor';
 
 import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 
-import { Realm } from 'src/interfaces/Realm';
+import { RealmView } from 'src/interfaces/Realm';
 import { PageProps } from 'src/interfaces/PageProps';
 
 type RealmPageProps = PageProps<{ realmCode: string }>;
@@ -19,7 +19,7 @@ type RealmPageProps = PageProps<{ realmCode: string }>;
 function RealmPage(props: RealmPageProps) {
   const realmCode = props.match.params.realmCode;
   const state = useAsync(
-    async () => await sendRequest<Realm>(`realm/${realmCode}`),
+    async () => await sendRequest<RealmView>(`realm/${realmCode}`),
     [realmCode]
   );
 
@@ -46,7 +46,7 @@ function RealmPage(props: RealmPageProps) {
               />
               <Route
                 path="/:realmCode"
-                render={(rp) => <RealmView {...rp} data={response} />}
+                render={(rp) => <RealmViewPage {...rp} data={response} />}
               />
             </Switch>
           </React.Fragment>

@@ -8,10 +8,14 @@ namespace Wiki.Mapping
     {
         public RealmProfile()
         {
+            CreateMap<Realm, RealmItemViewModel>()
+                .ForMember(d => d.RealmOwnerUserId, s => s.MapFrom(x => x.ApplicationUserId));
+
             CreateMap<Realm, RealmViewModel>()
                 .ForMember(d => d.RealmOwnerUserId, s => s.MapFrom(x => x.ApplicationUserId));
 
             CreateMap<RealmCreateRequest, Realm>();
+            CreateMap<RealmUpdateRequest, Realm>();
 
         }
     }
