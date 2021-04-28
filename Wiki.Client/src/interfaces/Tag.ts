@@ -8,7 +8,11 @@ export interface Tag {
 }
 
 export interface TagInput {
-  id?: string;
-  code: string;
+  id: string;
+  name: string;
+}
+
+export interface TagOption {
+  id: number;
   name: string;
 }

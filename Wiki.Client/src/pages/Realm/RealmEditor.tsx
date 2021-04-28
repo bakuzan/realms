@@ -8,23 +8,26 @@ import Tickbox from 'meiko/Tickbox';
 import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
 
 import TitleSeparator from 'src/components/TitleSeparator';
+import ErrorDisplay from 'src/components/ErrorDisplay';
 
-// import { useAsync } from 'src/hooks/useAsync';
+import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 import { mapTagToChipListOption } from 'src/utils/mappers';
 
 import { RealmView } from 'src/interfaces/Realm';
-import { Tag, TagInput } from 'src/interfaces/Tag';
+import { Tag, TagInput, TagOption } from 'src/interfaces/Tag';
 import { PageProps } from 'src/interfaces/PageProps';
 
 import './RealmEditor.scss';
 
 interface RealmEditorProps extends PageProps<{ realmCode: string }> {
   data: RealmView;
+  onUpdate: () => void;
 }
 
 type RealmEditorAction =
   | { type: 'AddTag'; value: TagInput }
+  | { type: 'UpdateTag'; value: ChipListOption[] }
   | { type: 'OnChange'; name: string; value: any }
   | { type: 'SubmitFailure'; errorMessages: string[] };
 
@@ -40,6 +43,15 @@ function reducer(state: RealmEditorState, action: RealmEditorAction) {
       return {
         ...state,
         tags: [...state.tags, action.value]
+      };
+    case 'UpdateTag':
+      return {
+        ...state,
+        tags: action.value.map(
+          (x) =>
+            state.tags.find((t) => t.id == x.id) ??
+            ({ id: x.id, name: x.name } as TagInput)
+        )
       };
     case 'OnChange':
       return { ...state, form: { ...state.form, [action.name]: action.value } };
@@ -58,14 +70,23 @@ function RealmEditor(props: RealmEditorProps) {
     tags: data.tags
   });
 
-  console.log('RealmEditor > ', props);
+  const tagState = useAsync(
+    async () => sendRequest<TagOption[]>(`tag/getrealmtags`),
+    []
+  );
 
-  const tagOptions: ChipListOption[] = []; // get these options...
+  const tagOptions: ChipListOption[] = tagState.value?.data ?? [];
+
+  console.log('RealmEditor > ', props);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const payload = { ...state.form, tags: state.tags };
+    const payload = {
+      ...state.form,
+      tagList: state.tags.map((x) => ('code' in x ? x : { name: x.name }))
+    };
+
     const response = await sendRequest(`realm/update`, {
       method: 'POST',
       body: JSON.stringify(payload)
@@ -74,6 +95,7 @@ function RealmEditor(props: RealmEditorProps) {
     console.log('UPDATED..? >', response);
 
     if (response.success) {
+      props.onUpdate();
       props.history.push(`/${response.data.code}`);
     } else {
       dispatch({
@@ -130,17 +152,17 @@ function RealmEditor(props: RealmEditorProps) {
               name="tags"
               chipsSelected={state.tags.map(mapTagToChipListOption)}
               chipOptions={tagOptions}
-              updateChipList={(name, value) =>
+              disableLocalFilter={tagOptions.length === 0}
+              updateChipList={(_, value) =>
                 dispatch({
-                  type: 'OnChange',
-                  name,
+                  type: 'UpdateTag',
                   value
                 })
               }
               createNew={(newTag) => {
                 dispatch({
                   type: 'AddTag',
-                  value: { code: generateUniqueId(), name: newTag.name }
+                  value: { id: generateUniqueId(), name: newTag.name }
                 });
               }}
               createNewMessage="Add new realm tag"
@@ -178,6 +200,7 @@ function RealmEditor(props: RealmEditorProps) {
             </div>
           </div>
         </div>
+        <ErrorDisplay messages={state.errorMessages} />
       </form>
     </div>
   );

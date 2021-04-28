@@ -2,11 +2,11 @@ import React, { useReducer } from 'react';
 import { Helmet } from 'react-helmet';
 
 import Form from 'meiko/Form';
-import Grid from 'meiko/Grid';
 import Tickbox from 'meiko/Tickbox';
 import ClearableInput from 'meiko/ClearableInput';
 
 import TitleSeparator from 'src/components/TitleSeparator';
+import ErrorDisplay from 'src/components/ErrorDisplay';
 
 import sendRequest from 'src/utils/sendRequest';
 
@@ -131,15 +131,7 @@ function RealmCreator(props: RealmCreatorProps) {
           }
         />
       </Form>
-      {state.errorMessages && (
-        <Grid className="error-list" items={state.errorMessages}>
-          {(x: string) => (
-            <li key={x} className="error-list__error error-block">
-              {x}
-            </li>
-          )}
-        </Grid>
-      )}
+      <ErrorDisplay messages={state.errorMessages} />
     </div>
   );
 }

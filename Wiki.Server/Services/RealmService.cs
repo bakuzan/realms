@@ -116,7 +116,8 @@ namespace Wiki.Services
                 .Where(x => x.Id.HasValue)
                 .Select(x => x.Id.Value);
 
-            foreach (var t in realm.Tags)
+            var currentTags = realm.Tags.ToList();
+            foreach (var t in currentTags)
             {
                 if (!oldTagIds.Contains(t.Id))
                 {

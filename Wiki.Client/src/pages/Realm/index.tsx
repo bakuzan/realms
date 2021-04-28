@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import GuardResponseState from 'src/components/GuardResponseState';
 import RealmViewPage from './RealmView';
 import RealmEditor from './RealmEditor';
 
-import { useAsync } from 'src/hooks/useAsync';
+import { useAsyncFn } from 'src/hooks/useAsyncFn';
 import sendRequest from 'src/utils/sendRequest';
 
 import { RealmView } from 'src/interfaces/Realm';
@@ -18,10 +18,15 @@ type RealmPageProps = PageProps<{ realmCode: string }>;
 
 function RealmPage(props: RealmPageProps) {
   const realmCode = props.match.params.realmCode;
-  const state = useAsync(
+
+  const [state, fetchRealmView] = useAsyncFn(
     async () => await sendRequest<RealmView>(`realm/${realmCode}`),
     [realmCode]
   );
+
+  useEffect(() => {
+    fetchRealmView();
+  }, [fetchRealmView]);
 
   return (
     <GuardResponseState state={state}>
@@ -41,7 +46,13 @@ function RealmPage(props: RealmPageProps) {
                 path="/:realmCode/edit"
                 render={(rp) => {
                   const p = rp as RealmPageProps;
-                  return <RealmEditor {...p} data={response} />;
+                  return (
+                    <RealmEditor
+                      {...p}
+                      data={response}
+                      onUpdate={fetchRealmView}
+                    />
+                  );
                 }}
               />
               <Route

@@ -21,3 +21,8 @@ main {
   margin: 25px 0;
   box-sizing: border-box;
 }
+
+// Overrides
+.tag-cloud__actions {
+  display: none !important;
+}

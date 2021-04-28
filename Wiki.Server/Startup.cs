@@ -34,13 +34,13 @@ namespace Wiki
 
             // Identity stuff
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<DatabaseContext>();
+                    .AddEntityFrameworkStores<DatabaseContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, DatabaseContext>();
+                    .AddApiAuthorization<ApplicationUser, DatabaseContext>();
 
             services.AddAuthentication()
-                .AddIdentityServerJwt();
+                    .AddIdentityServerJwt();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -62,14 +62,13 @@ namespace Wiki
             services.AddRazorPages();
             services.Configure<RazorViewEngineOptions>(o => o.ViewLocationExpanders.Add(new WikiViewLocationExpander()));
 
-
             // Services
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IUserService, UserService>()
                     .AddScoped<IRealmService, RealmService>()
-                    .AddScoped<IRealmDataService, RealmDataService>();
-
-            // services.AddHttpClient<IContentService, ContentService>();
+                    .AddScoped<IRealmDataService, RealmDataService>()
+                    .AddScoped<ITagService, TagService>()
+                    .AddScoped<ITagDataService, TagDataService>();
 
             // Mapping
             var mapping = new MapperConfiguration(mc =>

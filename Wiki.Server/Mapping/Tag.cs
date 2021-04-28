@@ -9,6 +9,7 @@ namespace Wiki.Mapping
         public TagProfile()
         {
             CreateMap<Tag, TagViewModel>();
+            CreateMap<Tag, TagDropdownModel>();
 
         }
     }
