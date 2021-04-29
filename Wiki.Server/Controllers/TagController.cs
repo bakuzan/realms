@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Wiki.Services;
-using Wiki.ViewModels;
+using Wiki.ViewModels.Tag;
 
 namespace Wiki.Controllers
 {

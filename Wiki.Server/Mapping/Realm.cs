@@ -1,6 +1,6 @@
 using AutoMapper;
 using Wiki.Data;
-using Wiki.ViewModels;
+using Wiki.ViewModels.Realm;
 
 namespace Wiki.Mapping
 {
@@ -9,7 +9,7 @@ namespace Wiki.Mapping
         public RealmProfile()
         {
             CreateMap<Realm, RealmItemViewModel>()
-                .ForMember(d => d.RealmOwnerUserId, s => s.MapFrom(x => x.ApplicationUserId));
+                .ForMember(d => d.FragmentCount, s => s.MapFrom(x => x.Fragments.Count));
 
             CreateMap<Realm, RealmViewModel>()
                 .ForMember(d => d.RealmOwnerUserId, s => s.MapFrom(x => x.ApplicationUserId));

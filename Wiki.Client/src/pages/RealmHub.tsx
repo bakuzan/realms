@@ -5,8 +5,8 @@ import { Switch, Route } from 'react-router-dom';
 import AuthorizeRoute from 'src/components/ApiAuthorization/AuthorizeRoute';
 import GuardResponseState from 'src/components/GuardResponseState';
 
-import RealmViewPage from './RealmView';
-import RealmEditor from './RealmEditor';
+import RealmViewPage from './Realm/RealmView';
+import RealmEditor from './Realm/RealmEditor';
 
 import { useAsyncFn } from 'src/hooks/useAsyncFn';
 import sendRequest from 'src/utils/sendRequest';

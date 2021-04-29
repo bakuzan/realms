@@ -9,6 +9,13 @@ export interface Realm {
   realmOwnerUserId: string;
 }
 
+export interface RealmItem {
+  id: number;
+  name: string;
+  code: string;
+  fragmentCount: number;
+}
+
 export interface RealmView extends Realm {
   tags: Tag[];
 }

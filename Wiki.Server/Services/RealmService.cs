@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Wiki.Data;
 using Wiki.Extensions;
-using Wiki.ViewModels;
+using Wiki.ViewModels.Realm;
+using Wiki.ViewModels.Tag;
 
 namespace Wiki.Services
 {
@@ -67,6 +68,13 @@ namespace Wiki.Services
         {
             var response = new RealmCreateResponse();
             var user = await _userService.GetCurrentUser(claim);
+            var userId = user == null ? string.Empty : user.Id;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                response.ErrorMessages.Add("You are not authorised to perform this action.");
+                return response;
+            }
 
             if (string.IsNullOrEmpty(request.Name))
             {
@@ -90,6 +98,12 @@ namespace Wiki.Services
             var response = new RealmUpdateResponse();
             var user = await _userService.GetCurrentUser(claim);
             var userId = user == null ? string.Empty : user.Id;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                response.ErrorMessages.Add("You are not authorised to perform this action.");
+                return response;
+            }
 
             var realm = await _realmDataService.GetAsync<Realm>(request.Id, x => x.Tags);
             if (realm == null)

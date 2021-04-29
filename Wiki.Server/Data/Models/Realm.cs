@@ -17,6 +17,7 @@ namespace Wiki.Data
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
+        public ICollection<Fragment> Fragments { get; } = new List<Fragment>();
         public ICollection<Tag> Tags { get; } = new List<Tag>();
 
     }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Wiki.ViewModels;
+using Wiki.ViewModels.Realm;
 
 namespace Wiki.Services
 {

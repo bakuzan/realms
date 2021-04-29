@@ -67,6 +67,8 @@ namespace Wiki
             services.AddScoped<IUserService, UserService>()
                     .AddScoped<IRealmService, RealmService>()
                     .AddScoped<IRealmDataService, RealmDataService>()
+                    .AddScoped<IFragmentService, FragmentService>()
+                    .AddScoped<IFragmentDataService, FragmentDataService>()
                     .AddScoped<ITagService, TagService>()
                     .AddScoped<ITagDataService, TagDataService>();
 
@@ -75,6 +77,7 @@ namespace Wiki
             {
                 mc.AddProfile(new UserProfile());
                 mc.AddProfile(new RealmProfile());
+                mc.AddProfile(new FragmentProfile());
                 mc.AddProfile(new TagProfile());
             });
 

@@ -9,7 +9,7 @@ import { useGlobalStyles } from 'meiko/hooks/useGlobalStyles';
 import HeaderBar from './components/Header/HeaderBar';
 
 import Home from './pages/Home';
-import Realm from './pages/Realm';
+import RealmHub from './pages/RealmHub';
 import RealmCreator from './pages/Realm/RealmCreator';
 import NotFound from './pages/NotFound';
 
@@ -43,7 +43,7 @@ function App() {
           />
 
           <AuthorizeRoute exact path="/new-realm" component={RealmCreator} />
-          <Route path="/:realmCode" component={Realm} />
+          <Route path="/:realmCode" component={RealmHub} />
 
           {/* Below here are routes that should come last, and shouldn't be messed with */}
           <Route path="*" component={NotFound} />

@@ -1,4 +1,4 @@
-namespace Wiki.ViewModels
+namespace Wiki.ViewModels.Tag
 {
     public class TagInputModel
     {

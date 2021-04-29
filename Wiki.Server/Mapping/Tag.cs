@@ -1,6 +1,6 @@
 using AutoMapper;
 using Wiki.Data;
-using Wiki.ViewModels;
+using Wiki.ViewModels.Tag;
 
 namespace Wiki.Mapping
 {

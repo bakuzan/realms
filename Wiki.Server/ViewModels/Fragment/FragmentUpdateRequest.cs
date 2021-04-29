@@ -1,14 +1,13 @@
 using System.Collections.Generic;
+using Wiki.ViewModels.Tag;
 
-namespace Wiki.ViewModels
+namespace Wiki.ViewModels.Fragment
 {
-    public class RealmUpdateRequest
+    public class FragmentUpdateRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsAuthenticationRestricted { get; set; }
-        public bool IsPrivate { get; set; }
-
+        public string Content { get; set; }
         public List<TagInputModel> TagList { get; set; }
 
     }

@@ -3,13 +3,20 @@ import { Profile } from 'oidc-client';
 
 import authService from 'src/components/ApiAuthorization/AuthorizeService';
 
-interface GuardWithAuthorisationProps {
-  ownerUserId?: string;
-  children: JSX.Element;
-}
+type GuardWithAuthorisationProps =
+  | {
+      isPrivate: true;
+      ownerUserId: string;
+      children: JSX.Element;
+    }
+  | {
+      isPrivate?: false;
+      children: JSX.Element;
+    };
 
 function GuardWithAuthorisation(props: GuardWithAuthorisationProps) {
   const [user, setUser] = useState<Profile | null>(null);
+  const ownerUserId = props.isPrivate ? props.ownerUserId : null;
 
   useEffect(() => {
     async function refreshUser() {
@@ -23,7 +30,7 @@ function GuardWithAuthorisation(props: GuardWithAuthorisationProps) {
     return () => authService.unsubscribe(unsubId);
   }, []);
 
-  if (!user || (props.ownerUserId && user.sub !== props.ownerUserId)) {
+  if (!user || (ownerUserId && user.sub !== ownerUserId)) {
     return null;
   }
 

@@ -1,4 +1,4 @@
-namespace Wiki.ViewModels
+namespace Wiki.ViewModels.Realm
 {
     public class RealmCreateResponse : BaseResponse<RealmCreateResponse>
     {

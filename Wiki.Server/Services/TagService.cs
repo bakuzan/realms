@@ -6,7 +6,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Wiki.Data;
 using Wiki.Enums;
-using Wiki.ViewModels;
+using Wiki.ViewModels.Tag;
 
 namespace Wiki.Services
 {

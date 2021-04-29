@@ -19,6 +19,7 @@ namespace Wiki.Data
             var isAuthenticated = !string.IsNullOrEmpty(userId);
 
             return await _context.Realms
+                .Include(x => x.Fragments)
                 .Where(x =>
                     (!x.IsAuthenticationRestricted && !x.IsPrivate)
                     || (!x.IsPrivate && x.IsAuthenticationRestricted && isAuthenticated)

@@ -15,6 +15,7 @@ namespace Wiki.Data
 
         // Relations
         public ICollection<Realm> Realms { get; } = new List<Realm>();
+        public ICollection<Fragment> Fragments { get; } = new List<Fragment>();
 
     }
 }

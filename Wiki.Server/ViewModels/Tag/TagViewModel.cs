@@ -1,6 +1,6 @@
 using Wiki.Enums;
 
-namespace Wiki.ViewModels
+namespace Wiki.ViewModels.Tag
 {
     public class TagViewModel
     {

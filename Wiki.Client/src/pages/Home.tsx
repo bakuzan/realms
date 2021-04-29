@@ -12,7 +12,7 @@ import GuardResponseState from 'src/components/GuardResponseState';
 import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 
-import { Realm } from 'src/interfaces/Realm';
+import { RealmItem } from 'src/interfaces/Realm';
 import { AppName } from 'src/constants';
 
 import './Home.scss';
@@ -21,7 +21,7 @@ function Home(props: any) {
   const [filter, setFilter] = useState('');
 
   const state = useAsync(
-    async () => await sendRequest<Realm[]>('realm/getall'),
+    async () => await sendRequest<RealmItem[]>('realm/getall'),
     []
   );
 
@@ -49,7 +49,7 @@ function Home(props: any) {
             : 'No items found for current filter';
 
           const filteredItems = response.filter(
-            (x: Realm) =>
+            (x: RealmItem) =>
               x.name.includes(filterLower) || x.code.includes(filterLower)
           );
 
@@ -77,12 +77,12 @@ function Home(props: any) {
                 items={filteredItems}
                 noItemsText={noItemsText}
               >
-                {(x: Realm) => (
+                {(x: RealmItem) => (
                   <li key={x.id} className="realm">
                     <NavLink className="realm__link" to={`/${x.code}`}>
                       {x.name}
                     </NavLink>
-                    <div>Pages: {1}</div>
+                    <div>Pages: {x.fragmentCount}</div>
                   </li>
                 )}
               </Grid>

@@ -4,10 +4,10 @@ import { NavLink } from 'react-router-dom';
 
 import TagCloudSelector from 'meiko/TagCloudSelector';
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
+import TitleSeparator from 'src/components/TitleSeparator';
 
 import { RealmView } from 'src/interfaces/Realm';
 import { PageProps } from 'src/interfaces/PageProps';
-import TitleSeparator from 'src/components/TitleSeparator';
 
 interface RealmViewProps extends PageProps<{ realmCode: string }> {
   data: RealmView;
@@ -24,10 +24,22 @@ function RealmViewPage(props: RealmViewProps) {
       <Helmet title={`Hub`} />
       <header className="page__header">
         <h2>{realmName} Hub</h2>
-        <GuardWithAuthorisation ownerUserId={data.realmOwnerUserId}>
+        <GuardWithAuthorisation
+          isPrivate={data.isPrivate}
+          ownerUserId={data.realmOwnerUserId}
+        >
           <NavLink to={`${props.match.url}/edit`}>Edit</NavLink>
         </GuardWithAuthorisation>
       </header>
+      <div>
+        <div className="flex-spacer"></div>
+        <GuardWithAuthorisation
+          isPrivate={data.isPrivate}
+          ownerUserId={data.realmOwnerUserId}
+        >
+          <NavLink to={`${props.match.url}/new-fragment`}>Add Page</NavLink>
+        </GuardWithAuthorisation>
+      </div>
       <div className="page__content">
         more content to follow...
         <div>
