@@ -6,6 +6,7 @@ import { Button } from 'meiko/Button';
 import ClearableInput from 'meiko/ClearableInput';
 import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
 
+import Markdown from 'src/components/Markdown';
 import ErrorDisplay from 'src/components/ErrorDisplay';
 
 import { useAsync } from 'src/hooks/useAsync';
@@ -166,11 +167,16 @@ function FragmentFormView(props: FragmentFormViewProps) {
           </div>
         </header>
         <div className="page__content">
-          put markdown thing here
-          <br />
-          <br />
-          <br />
-          <br />
+          <Markdown
+            data={state.form.content}
+            onChange={(value) =>
+              dispatch({
+                type: 'OnChange',
+                name: 'content',
+                value
+              })
+            }
+          />
           <ChipListInput
             id="tags"
             tagClassName="rlm-tag"

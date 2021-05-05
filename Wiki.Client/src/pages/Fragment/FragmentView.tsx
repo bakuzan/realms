@@ -1,12 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { NavLink } from 'react-router-dom';
 
 import TagCloudSelector from 'meiko/TagCloudSelector';
 
+import Markdown from 'src/components/Markdown';
 import GuardResponseState from 'src/components/GuardResponseState';
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 import TitleSeparator from 'src/components/TitleSeparator';
+import RealmsLink from 'src/components/RealmsLink';
 
 import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
@@ -45,16 +46,12 @@ function FragmentViewPage(props: FragmentViewProps) {
                 isPrivate={realm.isPrivate}
                 ownerUserId={realm.realmOwnerUserId}
               >
-                <NavLink to={`${props.match.url}/edit`}>Edit</NavLink>
+                <RealmsLink to={`${props.match.url}/edit`}>Edit</RealmsLink>
               </GuardWithAuthorisation>
             </header>
             <div className="page-grid">
               <div className="page-grid__core">
-                put markdown thing here
-                <br />
-                <br />
-                <br />
-                <br />
+                <Markdown data={fragment.content} />
                 <div>
                   <TitleSeparator title="Tags" />
                   <TagCloudSelector

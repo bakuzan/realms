@@ -1,7 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 
 import { nano } from 'meiko/styles/nano';
+
+import RealmsLink from 'src/components/RealmsLink';
 
 nano.put('.not-found', {
   display: 'flex',
@@ -41,7 +42,7 @@ function NotFoundPage() {
           </div>
         </div>
         <div className="not-found__action">
-          <NavLink to="/">Return to home</NavLink>
+          <RealmsLink to="/">Return to home</RealmsLink>
         </div>
       </div>
     </div>

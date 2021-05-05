@@ -21,6 +21,12 @@ main {
   }
 }
 
+.page-grid {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 80% 20%;
+}
+
 .button-group.button-group {
   justify-content: flex-start;
   margin: 25px 0;

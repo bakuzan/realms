@@ -1,0 +1,40 @@
+.react-codemirror2 {
+  width: 100%;
+  min-height: 250px;
+  margin: 5px 0;
+}
+
+.CodeMirror {
+  background: var(--base-background-hover);
+}
+
+.rlm-markdown {
+  &--content {
+    .tabs__controls {
+      display: none;
+    }
+    .tabs__panels {
+      border-top-color: transparent !important;
+    }
+  }
+}
+
+// help styles
+.markdown-reference {
+  width: 100%;
+}
+
+// markdown content styles
+.rlm-markdown__markdown {
+  width: 100%;
+  min-height: 250px;
+
+  // markdown stylings here
+  blockquote {
+    background-color: #e6e6e6;
+    color: #1f1f1f;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 5px 0;
+  }
+}

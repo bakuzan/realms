@@ -1,10 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { NavLink } from 'react-router-dom';
 
 import TagCloudSelector from 'meiko/TagCloudSelector';
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 import TitleSeparator from 'src/components/TitleSeparator';
+import RealmsLink from 'src/components/RealmsLink';
 
 import { RealmView } from 'src/interfaces/Realm';
 import { PageProps } from 'src/interfaces/PageProps';
@@ -28,7 +28,7 @@ function RealmViewPage(props: RealmViewProps) {
           isPrivate={data.isPrivate}
           ownerUserId={data.realmOwnerUserId}
         >
-          <NavLink to={`${props.match.url}/edit`}>Edit</NavLink>
+          <RealmsLink to={`${props.match.url}/edit`}>Edit</RealmsLink>
         </GuardWithAuthorisation>
       </header>
       <div className="page__action-bar">
@@ -37,7 +37,9 @@ function RealmViewPage(props: RealmViewProps) {
           isPrivate={data.isPrivate}
           ownerUserId={data.realmOwnerUserId}
         >
-          <NavLink to={`${props.match.url}/new-fragment`}>Add Page</NavLink>
+          <RealmsLink to={`${props.match.url}/new-fragment`}>
+            Add Page
+          </RealmsLink>
         </GuardWithAuthorisation>
       </div>
       <div className="page__content">

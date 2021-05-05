@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 
 import { Helmet } from 'react-helmet';
-import { NavLink } from 'react-router-dom';
 
 import ClearableInput from 'meiko/ClearableInput';
 import Grid from 'meiko/Grid';
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 import GuardResponseState from 'src/components/GuardResponseState';
+import RealmsLink from 'src/components/RealmsLink';
 
 import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
@@ -33,9 +33,9 @@ function Home(props: any) {
       <header className="home__header">
         <h2>{AppName} Hub</h2>
         <GuardWithAuthorisation>
-          <NavLink className="add-realm" to={`/new-realm`}>
+          <RealmsLink className="add-realm" to={`/new-realm`}>
             Add Realm
-          </NavLink>
+          </RealmsLink>
         </GuardWithAuthorisation>
       </header>
       <GuardResponseState state={state}>
@@ -82,9 +82,9 @@ function Home(props: any) {
 
                   return (
                     <li key={x.id} className="realm">
-                      <NavLink className="realm__link" to={`/${x.code}`}>
+                      <RealmsLink className="realm__link" to={`/${x.code}`}>
                         {x.name}
-                      </NavLink>
+                      </RealmsLink>
                       <div>
                         {x.fragmentCount
                           ? `${x.fragmentCount} ${fragmentText}`

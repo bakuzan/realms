@@ -8,28 +8,35 @@ $off-white: #f1f1f1;
 $onyx: #1f1f1f;
 $red: #f00;
 $tyrian: #66023c;
+$purple: #df73ff;
+$gold: #ffcc33;
 
 :root {
+  // todo
+  // slightly less bland theme
   --base-background: #{$white};
   --base-background-hover: #{darken($white, 10%)};
 
   --base-colour: #000;
   --base-colour-hover: #{lighten(#000, 10%)};
 
-  --primary-colour: #{$off-white};
-  --primary-colour-hover: #{darken($off-white, 10%)};
+  --primary-colour: #{$tyrian};
+  --primary-colour-hover: #{lighten($tyrian, 10%)};
 
-  --primary-contrast: #{$onyx};
-  --primary-contrast-hover: #{lighten($onyx, 10%)};
+  --primary-contrast: #{$off-white};
+  --primary-contrast-hover: #{darken($off-white, 10%)};
 
-  --accent-colour: #{$tyrian};
-  --accent-colour-hover: #{lighten($tyrian, 10%)};
+  --accent-colour: #{$gold};
+  --accent-colour-hover: #{darken($gold, 10%)};
 
-  --accent-contrast: #{$white};
-  --accent-contrast-hover: #{darken($white, 10%)};
+  --accent-contrast: #{$onyx};
+  --accent-contrast-hover: #{lighten($onyx, 10%)};
 
-  --highlight: #{$tyrian};
+  --highlight: #{$purple};
   --faded-colour: #999;
+
+  --faded-out-background: #ccc;
+  --faded-out-colour: #000;
 
   --danger-colour: #{$red};
   --danger-colour-hover: #{darken($red, 10%)};
@@ -60,6 +67,32 @@ input {
       right: 0;
       bottom: 0px;
       height: 8px;
+    }
+  }
+
+  .nav-menu__link,
+  .application-header__brand {
+    color: var(--primary-contrast);
+    text-decoration: none;
+
+    &.active,
+    &:active,
+    &:focus,
+    &:hover {
+      color: var(--primary-contrast-hover);
+    }
+  }
+
+  .realms-link {
+    color: var(--accent-colour);
+    text-decoration: none;
+
+    &.active,
+    &:active,
+    &:focus,
+    &:hover {
+      color: var(--accent-colour-hover);
+      text-decoration: dashed;
     }
   }
 
@@ -159,6 +192,27 @@ input {
   }
   .radio__input:checked::after {
     color: var(--accent-colour);
+  }
+
+  .tabs__panels {
+    border-top: 1px solid var(--primary-colour);
+  }
+  .tab-control:not(.tab-control--active) {
+    &:not(:hover),
+    .tab-control__button:not(:hover) {
+      background-color: var(--faded-out-background);
+      color: var(--faded-out-colour);
+      border-color: var(--faded-out-background);
+      border-bottom: none;
+    }
+  }
+  .tab-control--active,
+  .tab-control:hover {
+    border: {
+      color: var(--primary-colour);
+      bottom-color: var(--base-background);
+      bottom-width: 2px;
+    }
   }
 
   .error-block {
