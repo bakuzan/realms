@@ -77,14 +77,22 @@ function Home(props: any) {
                 items={filteredItems}
                 noItemsText={noItemsText}
               >
-                {(x: RealmItem) => (
-                  <li key={x.id} className="realm">
-                    <NavLink className="realm__link" to={`/${x.code}`}>
-                      {x.name}
-                    </NavLink>
-                    <div>Pages: {x.fragmentCount}</div>
-                  </li>
-                )}
+                {(x: RealmItem) => {
+                  const fragmentText = x.fragmentCount === 1 ? 'page' : 'pages';
+
+                  return (
+                    <li key={x.id} className="realm">
+                      <NavLink className="realm__link" to={`/${x.code}`}>
+                        {x.name}
+                      </NavLink>
+                      <div>
+                        {x.fragmentCount
+                          ? `${x.fragmentCount} ${fragmentText}`
+                          : `No pages`}
+                      </div>
+                    </li>
+                  );
+                }}
               </Grid>
             </div>
           );

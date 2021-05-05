@@ -69,6 +69,7 @@ export default async function sendRequest<T = any>(
         await authService.signOut({ returnUrl });
       } else if (!isUnauthorised) {
         console.log('Bad response, Not 401', response);
+        authService.clearStaleState();
         // alertService.showError(
         //   `Request was unsuccessful.`,
         //   `${response.status}: ${response.statusText}`

@@ -28,6 +28,13 @@ namespace Wiki.Controllers
             return await _tagService.GetRealmTags(User);
         }
 
+        [HttpGet]
+        [Route("{action}/{realmCode}")]
+        public async Task<List<TagDropdownModel>> GetFragmentTagsInRealm(string realmCode)
+        {
+            return await _tagService.GetFragmentTagsInRealm(User, realmCode);
+        }
+
 
     }
 }

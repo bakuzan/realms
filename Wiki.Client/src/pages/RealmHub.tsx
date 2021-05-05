@@ -7,6 +7,8 @@ import GuardResponseState from 'src/components/GuardResponseState';
 
 import RealmViewPage from './Realm/RealmView';
 import RealmEditor from './Realm/RealmEditor';
+import FragmentFormView from './Fragment/FragmentFormView';
+import FragmentView from './Fragment/FragmentView';
 
 import { useAsyncFn } from 'src/hooks/useAsyncFn';
 import sendRequest from 'src/utils/sendRequest';
@@ -56,8 +58,20 @@ function RealmPage(props: RealmPageProps) {
                 }}
               />
               <Route
+                exact
                 path="/:realmCode"
                 render={(rp) => <RealmViewPage {...rp} data={response} />}
+              />
+              <Route
+                path={[
+                  '/:realmCode/new-fragment',
+                  '/:realmCode/:fragmentCode/edit'
+                ]}
+                render={(fp) => <FragmentFormView {...fp} data={response} />}
+              />
+              <Route
+                path="/:realmCode/:fragmentCode"
+                render={(rp) => <FragmentView {...rp} data={response} />}
               />
             </Switch>
           </React.Fragment>

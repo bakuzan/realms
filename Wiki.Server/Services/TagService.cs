@@ -34,6 +34,29 @@ namespace Wiki.Services
             return _mapper.Map<List<TagDropdownModel>>(tags);
         }
 
+        public async Task<List<TagDropdownModel>> GetFragmentTagsInRealm(ClaimsPrincipal claim, string realmCode)
+        {
+            var user = await _userService.GetCurrentUser(claim);
+            var userId = user == null ? string.Empty : user.Id;
+
+            var realm = await _tagDataService.GetAsync<Realm>(x => x.Code == realmCode);
+            if (realm == null
+                || (realm.IsAuthenticationRestricted && user == null)
+                || (realm.IsPrivate && realm.ApplicationUserId != userId))
+            {
+                // Todo properly...
+                // For now just give invalid users nothing.
+                return new List<TagDropdownModel>();
+            }
+
+            var tags = await _tagDataService
+                .GetTagsForScopeQuery(TagScope.Fragment)
+                .Where(x => x.Fragments.Any(f => f.RealmId == realm.Id))
+                .ToListAsync();
+
+            return _mapper.Map<List<TagDropdownModel>>(tags);
+        }
+
 
     }
 }

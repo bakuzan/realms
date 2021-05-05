@@ -59,6 +59,9 @@ namespace Wiki.Services
             else
             {
                 response.Data = _mapper.Map<RealmViewModel>(realm);
+
+                // todo
+                // return the fragments groupings.
             }
 
             return response;

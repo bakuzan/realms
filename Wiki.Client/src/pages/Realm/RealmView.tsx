@@ -31,7 +31,7 @@ function RealmViewPage(props: RealmViewProps) {
           <NavLink to={`${props.match.url}/edit`}>Edit</NavLink>
         </GuardWithAuthorisation>
       </header>
-      <div>
+      <div className="page__action-bar">
         <div className="flex-spacer"></div>
         <GuardWithAuthorisation
           isPrivate={data.isPrivate}
@@ -41,7 +41,7 @@ function RealmViewPage(props: RealmViewProps) {
         </GuardWithAuthorisation>
       </div>
       <div className="page__content">
-        more content to follow...
+        Display customised fragment groupings
         <div>
           <TitleSeparator title="Tags" />
           <TagCloudSelector

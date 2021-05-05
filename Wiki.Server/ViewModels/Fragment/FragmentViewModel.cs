@@ -10,7 +10,7 @@ namespace Wiki.ViewModels.Fragment
         public string Code { get; set; }
         public string Content { get; set; }
         public List<TagViewModel> Tags { get; set; }
-        public int RealmOwnerUserId { get; set; }
+        public string RealmOwnerUserId { get; set; }
 
     }
 

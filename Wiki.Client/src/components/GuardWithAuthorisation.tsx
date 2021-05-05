@@ -3,16 +3,11 @@ import { Profile } from 'oidc-client';
 
 import authService from 'src/components/ApiAuthorization/AuthorizeService';
 
-type GuardWithAuthorisationProps =
-  | {
-      isPrivate: true;
-      ownerUserId: string;
-      children: JSX.Element;
-    }
-  | {
-      isPrivate?: false;
-      children: JSX.Element;
-    };
+type GuardWithAuthorisationProps = {
+  isPrivate?: boolean;
+  ownerUserId?: string;
+  children: JSX.Element;
+};
 
 function GuardWithAuthorisation(props: GuardWithAuthorisationProps) {
   const [user, setUser] = useState<Profile | null>(null);

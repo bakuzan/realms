@@ -49,7 +49,7 @@ function reducer(state: RealmEditorState, action: RealmEditorAction) {
         ...state,
         tags: action.value.map(
           (x) =>
-            state.tags.find((t) => t.id == x.id) ??
+            state.tags.find((t) => t.id === x.id) ??
             ({ id: x.id, name: x.name } as TagInput)
         )
       };
@@ -109,7 +109,7 @@ function RealmEditor(props: RealmEditorProps) {
     <div className="page">
       <Helmet title={`Editing`} />
       <form
-        name="realmEditor"
+        name="RealmEditor"
         noValidate
         autoComplete="off"
         onSubmit={onSubmit}
@@ -139,9 +139,7 @@ function RealmEditor(props: RealmEditorProps) {
         </header>
         <div className="page-grid">
           <div className="page-grid__core">
-            things will do here
-            <br />
-            need to create the component builder
+            Here we'll have the ability to customise fragment groupings
             <br />
             <ChipListInput
               id="tags"

@@ -8,6 +8,8 @@ namespace Wiki.Services
     public interface ITagService
     {
         Task<List<TagDropdownModel>> GetRealmTags(ClaimsPrincipal claim);
+        Task<List<TagDropdownModel>> GetFragmentTagsInRealm(ClaimsPrincipal claim, string realmCode);
+
 
     }
 }

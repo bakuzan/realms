@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Wiki.Enums;
 
 namespace Wiki.Data
@@ -14,7 +15,9 @@ namespace Wiki.Data
 
         public IQueryable<Tag> GetTagsForScopeQuery(TagScope tagScope)
         {
-            return _context.Tags.Where(x => x.TagScope == tagScope);
+            return _context.Tags
+                .Include(x => x.Fragments)
+                .Where(x => x.TagScope == tagScope);
         }
 
     }

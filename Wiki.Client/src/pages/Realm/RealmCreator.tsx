@@ -22,9 +22,7 @@ type RealmCreatorAction =
 interface RealmCreatorState {
   errorMessages?: string[];
   form: {
-    id?: number;
     name: string;
-    code?: string;
     isAuthenticationRestricted: boolean;
     isPrivate: boolean;
   };
