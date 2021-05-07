@@ -9,6 +9,7 @@ import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
 
 import TitleSeparator from 'src/components/TitleSeparator';
 import ErrorDisplay from 'src/components/ErrorDisplay';
+import RealmGroups from 'src/components/RealmGroups';
 
 import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
@@ -77,7 +78,7 @@ function RealmEditor(props: RealmEditorProps) {
 
   const tagOptions: ChipListOption[] = tagState.value?.data ?? [];
 
-  console.log('RealmEditor > ', props);
+  console.log('RealmEditor > ', props, state);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -139,8 +140,8 @@ function RealmEditor(props: RealmEditorProps) {
         </header>
         <div className="page-grid">
           <div className="page-grid__core">
-            Here we'll have the ability to customise fragment groupings
-            <br />
+            <RealmGroups data={[]} onChange={() => null} />{' '}
+            {/* TODO get shards in here */}
             <ChipListInput
               id="tags"
               tagClassName="rlm-tag"

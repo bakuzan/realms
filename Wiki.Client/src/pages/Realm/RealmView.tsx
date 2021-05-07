@@ -5,6 +5,7 @@ import TagCloudSelector from 'meiko/TagCloudSelector';
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 import TitleSeparator from 'src/components/TitleSeparator';
 import RealmsLink from 'src/components/RealmsLink';
+import RealmGroups from 'src/components/RealmGroups';
 
 import { RealmView } from 'src/interfaces/Realm';
 import { PageProps } from 'src/interfaces/PageProps';
@@ -43,7 +44,7 @@ function RealmViewPage(props: RealmViewProps) {
         </GuardWithAuthorisation>
       </div>
       <div className="page__content">
-        Display customised fragment groupings
+        <RealmGroups data={data.shards} />
         <div>
           <TitleSeparator title="Tags" />
           <TagCloudSelector

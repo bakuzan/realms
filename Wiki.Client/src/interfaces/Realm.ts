@@ -1,3 +1,4 @@
+import { RealmShard } from './RealmShard';
 import { Tag } from './Tag';
 
 export interface Realm {
@@ -17,5 +18,6 @@ export interface RealmItem {
 }
 
 export interface RealmView extends Realm {
+  shards: RealmShard[];
   tags: Tag[];
 }

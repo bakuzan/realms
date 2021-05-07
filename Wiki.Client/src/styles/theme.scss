@@ -12,8 +12,6 @@ $purple: #df73ff;
 $gold: #ffcc33;
 
 :root {
-  // todo
-  // slightly less bland theme
   --base-background: #{$white};
   --base-background-hover: #{darken($white, 10%)};
 
@@ -60,7 +58,7 @@ input {
     color: var(--primary-contrast);
 
     &::after {
-      box-shadow: 0px 2px 5px -3px var(--highlight);
+      box-shadow: 0px 2px 5px -2px var(--highlight);
       content: '';
       position: absolute;
       left: -10px;
@@ -84,7 +82,7 @@ input {
   }
 
   .realms-link {
-    color: var(--accent-colour);
+    color: var(--primary-colour);
     text-decoration: none;
 
     &.active,
@@ -92,12 +90,12 @@ input {
     &:focus,
     &:hover {
       color: var(--accent-colour-hover);
-      text-decoration: dashed;
+      text-decoration: underline;
     }
   }
 
   .loading-bouncer__orb {
-    background-color: var(--primary-colour);
+    background-color: var(--accent-colour);
   }
 
   .dropdown-menu__menu {

@@ -11,6 +11,7 @@ namespace Wiki.ViewModels.Realm
         public bool IsAuthenticationRestricted { get; set; }
         public bool IsPrivate { get; set; }
         public string RealmOwnerUserId { get; set; }
+        public List<RealmShardViewModel> Shards { get; set; } = new List<RealmShardViewModel>();
         public List<TagViewModel> Tags { get; set; }
 
     }

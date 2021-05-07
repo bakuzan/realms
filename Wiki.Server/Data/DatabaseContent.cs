@@ -15,6 +15,8 @@ namespace Wiki.Data
 
         // Database entities here
         public DbSet<Realm> Realms { get; set; }
+        public DbSet<RealmShard> RealmShards { get; set; }
+        public DbSet<RealmShardEntry> RealmShardEntries { get; set; }
         public DbSet<Fragment> Fragments { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
@@ -36,8 +38,45 @@ namespace Wiki.Data
                       .HasForeignKey(x => x.ApplicationUserId)
                       .IsRequired();
 
+                entity.HasMany(x => x.Fragments)
+                      .WithOne(x => x.Realm)
+                      .HasForeignKey(x => x.RealmId);
+
                 entity.HasMany(x => x.Tags)
                       .WithMany(x => x.Realms);
+
+            });
+
+            modelBuilder.Entity<RealmShard>(entity =>
+            {
+                entity.Property(x => x.Name)
+                      .IsRequired();
+
+                entity.Property(x => x.Code)
+                      .IsRequired();
+
+                entity.HasOne(x => x.Realm)
+                      .WithMany(x => x.RealmShards)
+                      .HasForeignKey(x => x.RealmId)
+                      .IsRequired();
+
+                entity.HasMany(x => x.RealmShardEntries)
+                      .WithOne(x => x.RealmShard)
+                      .HasForeignKey(x => x.RealmShardId);
+
+            });
+
+            modelBuilder.Entity<RealmShardEntry>(entity =>
+            {
+                entity.HasOne(x => x.RealmShard)
+                      .WithMany(x => x.RealmShardEntries)
+                      .HasForeignKey(x => x.RealmShardId)
+                      .IsRequired();
+
+                entity.HasOne(x => x.Fragment)
+                      .WithMany()
+                      .HasForeignKey(x => x.FragmentId);
+
             });
 
             modelBuilder.Entity<Fragment>(entity =>

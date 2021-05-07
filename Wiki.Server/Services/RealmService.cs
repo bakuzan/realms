@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Wiki.Data;
 using Wiki.Extensions;
 using Wiki.ViewModels.Realm;
@@ -58,10 +59,7 @@ namespace Wiki.Services
             }
             else
             {
-                response.Data = _mapper.Map<RealmViewModel>(realm);
-
-                // todo
-                // return the fragments groupings.
+                response.Data = await MapRealmAndBuildFragmentsMap(realm);
             }
 
             return response;
@@ -128,6 +126,9 @@ namespace Wiki.Services
                 return response;
             }
 
+            // TODO
+            // Update realm shards...
+
             // Update tags
             var oldTagIds = request.TagList
                 .Where(x => x.Id.HasValue)
@@ -144,6 +145,7 @@ namespace Wiki.Services
 
             await ProcessAndPersistNewTags(realm, request.TagList);
 
+            // Save and return
             _realmDataService.SetToPersist(realm);
             await _realmDataService.SaveAsync();
 
@@ -206,6 +208,40 @@ namespace Wiki.Services
                     realm.Tags.Add(tag);
                 }
             }
+        }
+
+        private async Task<RealmViewModel> MapRealmAndBuildFragmentsMap(Realm realm)
+        {
+            var fragmentIds = new List<int>();
+            var data = _mapper.Map<RealmViewModel>(realm);
+
+            var shards = await _realmDataService.GetRealmShardsForRealm(realm.Id);
+
+            foreach (var shard in shards)
+            {
+                var group = _mapper.Map<RealmShardViewModel>(shard);
+                var entries = _mapper.Map<List<RealmShardEntryViewModel>>(shard.RealmShardEntries);
+
+                group.Entries = group.IsOrdered
+                    ? entries.OrderBy(x => x.EntryOrder.Value).ToList()
+                    : entries;
+
+                fragmentIds.AddRange(entries.Select(x => x.FragmentId));
+                data.Shards.Add(group);
+            }
+
+            var remainderFragments = realm.Fragments.Where(x => !fragmentIds.Contains(x.Id));
+
+            if (remainderFragments.Any())
+            {
+                data.Shards.Add(
+                    new RealmShardViewModel
+                    {
+                        Entries = _mapper.Map<List<RealmShardEntryViewModel>>(remainderFragments)
+                    });
+            }
+
+            return data;
         }
 
         #endregion

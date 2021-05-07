@@ -35,6 +35,10 @@ namespace Wiki.Controllers
             return await _tagService.GetFragmentTagsInRealm(User, realmCode);
         }
 
+        // todo
+        // get fragments for tag(s)
+        // get realms for tag(s)
+
 
     }
 }

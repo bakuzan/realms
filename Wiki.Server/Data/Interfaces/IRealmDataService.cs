@@ -7,6 +7,7 @@ namespace Wiki.Data
     {
         Task<Realm> GetRealmAsync(string code);
         Task<List<Realm>> GetRealms(string userId);
+        Task<List<RealmShard>> GetRealmShardsForRealm(int realmId);
 
     }
 }
