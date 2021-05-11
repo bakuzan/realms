@@ -1,0 +1,59 @@
+.realm-map__items {
+  grid-auto-flow: column dense;
+}
+
+.realm-group {
+  &__title {
+    margin: 2px 0;
+  }
+
+  &__entries--grouped {
+    padding-inline-start: 20px;
+  }
+
+  &__item {
+    position: relative;
+    margin: 8px 0;
+
+    &:not(.realm-group__item--remainder) {
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        border: 1px dashed;
+      }
+
+      &::before {
+        top: 50%;
+        left: -15px;
+        width: 10px;
+      }
+
+      &::after {
+        top: -80%;
+        left: -15px;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.realm-fragment {
+  position: relative;
+  $self: &;
+
+  &::after {
+    position: absolute;
+    right: 0;
+    content: ' >> ';
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease-in-out;
+  }
+
+  &:hover::after {
+    right: -25px;
+    opacity: 1;
+    visibility: visible;
+  }
+}

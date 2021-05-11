@@ -39,12 +39,12 @@ function RealmViewPage(props: RealmViewProps) {
           ownerUserId={data.realmOwnerUserId}
         >
           <RealmsLink to={`${props.match.url}/new-fragment`}>
-            Add Page
+            Add Fragment
           </RealmsLink>
         </GuardWithAuthorisation>
       </div>
       <div className="page__content">
-        <RealmGroups data={data.shards} />
+        <RealmGroups baseUrl={props.match.url} data={data.shards} />
         <div>
           <TitleSeparator title="Tags" />
           <TagCloudSelector

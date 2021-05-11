@@ -140,7 +140,7 @@ function RealmEditor(props: RealmEditorProps) {
         </header>
         <div className="page-grid">
           <div className="page-grid__core">
-            <RealmGroups data={[]} onChange={() => null} />{' '}
+            <RealmGroups baseUrl={realmCode} data={[]} onChange={() => null} />{' '}
             {/* TODO get shards in here */}
             <ChipListInput
               id="tags"
