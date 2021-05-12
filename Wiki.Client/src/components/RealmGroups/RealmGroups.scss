@@ -57,3 +57,8 @@
     visibility: visible;
   }
 }
+
+.realm-remainder-fragments {
+  grid-auto-flow: column dense;
+  grid-template-rows: 1fr;
+}

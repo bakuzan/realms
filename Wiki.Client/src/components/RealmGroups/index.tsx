@@ -1,6 +1,7 @@
 import React from 'react';
 
 import RealmMap from './RealmMap';
+import RealmMapEditor from './RealmMapEditor';
 
 import { RealmShard } from 'src/interfaces/RealmShard';
 
@@ -12,13 +13,12 @@ interface RealmGroupsProps {
   onChange?: (data: RealmShard[]) => void;
 }
 
-function RealmGroupsEditor(props: RealmGroupsProps) {
-  return <div className="realm-groups-editor"></div>;
-}
-
 export default function RealmGroups(props: RealmGroupsProps) {
-  const View = props.onChange ? RealmGroupsEditor : RealmMap;
   console.log(' RealmGroups >> ', props, props.data);
 
-  return <View {...props} />;
+  if (props.onChange) {
+    return <RealmMapEditor {...props} onChange={props.onChange} />;
+  }
+
+  return <RealmMap {...props} />;
 }

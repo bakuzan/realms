@@ -16,6 +16,7 @@ import sendRequest from 'src/utils/sendRequest';
 import { mapTagToChipListOption } from 'src/utils/mappers';
 
 import { RealmView } from 'src/interfaces/Realm';
+import { RealmShard } from 'src/interfaces/RealmShard';
 import { Tag, TagInput, TagOption } from 'src/interfaces/Tag';
 import { PageProps } from 'src/interfaces/PageProps';
 
@@ -30,11 +31,13 @@ type RealmEditorAction =
   | { type: 'AddTag'; value: TagInput }
   | { type: 'UpdateTag'; value: ChipListOption[] }
   | { type: 'OnChange'; name: string; value: any }
+  | { type: 'UpdateShard'; shards: RealmShard[] }
   | { type: 'SubmitFailure'; errorMessages: string[] };
 
 interface RealmEditorState {
   errorMessages?: string[];
   form: RealmView;
+  shards: RealmShard[];
   tags: (Tag | TagInput)[];
 }
 
@@ -56,6 +59,8 @@ function reducer(state: RealmEditorState, action: RealmEditorAction) {
       };
     case 'OnChange':
       return { ...state, form: { ...state.form, [action.name]: action.value } };
+    case 'UpdateShard':
+      return { ...state, shards: action.shards };
     case 'SubmitFailure':
       return { ...state, errorMessages: action.errorMessages };
     default:
@@ -68,6 +73,7 @@ function RealmEditor(props: RealmEditorProps) {
   const realmCode = data.code;
   const [state, dispatch] = useReducer(reducer, {
     form: data,
+    shards: data.shards,
     tags: data.tags
   });
 
@@ -140,32 +146,39 @@ function RealmEditor(props: RealmEditorProps) {
         </header>
         <div className="page-grid">
           <div className="page-grid__core">
-            <RealmGroups baseUrl={realmCode} data={[]} onChange={() => null} />{' '}
-            {/* TODO get shards in here */}
-            <ChipListInput
-              id="tags"
-              tagClassName="rlm-tag"
-              menuClassName="rlm-autocomplete-menu"
-              label="Tags"
-              attr="name"
-              name="tags"
-              chipsSelected={state.tags.map(mapTagToChipListOption)}
-              chipOptions={tagOptions}
-              disableLocalFilter={tagOptions.length === 0}
-              updateChipList={(_, value) =>
-                dispatch({
-                  type: 'UpdateTag',
-                  value
-                })
-              }
-              createNew={(newTag) => {
-                dispatch({
-                  type: 'AddTag',
-                  value: { id: generateUniqueId(), name: newTag.name }
-                });
-              }}
-              createNewMessage="Add new realm tag"
+            <RealmGroups
+              baseUrl={realmCode}
+              data={state.shards}
+              onChange={(shards) => dispatch({ type: 'UpdateShard', shards })}
             />
+            <div>
+              <TitleSeparator title="Tags" />
+
+              <ChipListInput
+                id="tags"
+                tagClassName="rlm-tag"
+                menuClassName="rlm-autocomplete-menu"
+                label="Tags"
+                attr="name"
+                name="tags"
+                chipsSelected={state.tags.map(mapTagToChipListOption)}
+                chipOptions={tagOptions}
+                disableLocalFilter={tagOptions.length === 0}
+                updateChipList={(_, value) =>
+                  dispatch({
+                    type: 'UpdateTag',
+                    value
+                  })
+                }
+                createNew={(newTag) => {
+                  dispatch({
+                    type: 'AddTag',
+                    value: { id: generateUniqueId(), name: newTag.name }
+                  });
+                }}
+                createNewMessage="Add new realm tag"
+              />
+            </div>
           </div>
           <div className="page-grid__side">
             <div className="panel">

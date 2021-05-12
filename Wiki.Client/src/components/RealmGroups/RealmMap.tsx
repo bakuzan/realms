@@ -80,9 +80,9 @@ function RealmMap(props: RealmMapProps) {
       </Grid>
       {remainder !== undefined && (
         <Grid
-          className={classNames('realm-fragments')}
+          className={classNames('realm-remainder-fragments')}
           items={remainder.entries}
-          noItemsText={noItemsText}
+          noItemsText={false}
         >
           {(item: RealmShardEntry) => {
             return (
