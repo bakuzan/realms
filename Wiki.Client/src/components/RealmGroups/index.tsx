@@ -1,5 +1,6 @@
 import React from 'react';
 
+import TitleSeparator from 'src/components/TitleSeparator';
 import RealmMap from './RealmMap';
 import RealmMapEditor from './RealmMapEditor';
 
@@ -16,9 +17,12 @@ interface RealmGroupsProps {
 export default function RealmGroups(props: RealmGroupsProps) {
   console.log(' RealmGroups >> ', props, props.data);
 
-  if (props.onChange) {
-    return <RealmMapEditor {...props} onChange={props.onChange} />;
-  }
-
-  return <RealmMap {...props} />;
+  return props.onChange ? (
+    <React.Fragment>
+      <TitleSeparator title="Fragment Map" />
+      <RealmMapEditor {...props} onChange={props.onChange} />
+    </React.Fragment>
+  ) : (
+    <RealmMap {...props} />
+  );
 }

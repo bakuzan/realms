@@ -62,3 +62,18 @@
   grid-auto-flow: column dense;
   grid-template-rows: 1fr;
 }
+
+.realm-groups-editor {
+  margin-bottom: 25px;
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    border: 1px dashed var(--highlight);
+  }
+}
+
+.groups-editor {
+  gap: 5px;
+}

@@ -10,6 +10,7 @@ namespace Wiki.ViewModels.Realm
         public bool IsAuthenticationRestricted { get; set; }
         public bool IsPrivate { get; set; }
 
+        public List<RealmShardInputModel> Shards { get; set; }
         public List<TagInputModel> TagList { get; set; }
 
     }

@@ -2,6 +2,8 @@ import React, { useReducer } from 'react';
 import { Helmet } from 'react-helmet';
 
 import generateUniqueId from 'ayaka/generateUniqueId';
+import filterFalsey from 'ayaka/helpers/filterFalsey';
+
 import { Button } from 'meiko/Button';
 import ClearableInput from 'meiko/ClearableInput';
 import Tickbox from 'meiko/Tickbox';
@@ -21,6 +23,7 @@ import { Tag, TagInput, TagOption } from 'src/interfaces/Tag';
 import { PageProps } from 'src/interfaces/PageProps';
 
 import './RealmEditor.scss';
+import groupEditorValidator from 'src/utils/groupEditorValidator';
 
 interface RealmEditorProps extends PageProps<{ realmCode: string }> {
   data: RealmView;
@@ -83,15 +86,30 @@ function RealmEditor(props: RealmEditorProps) {
   );
 
   const tagOptions: ChipListOption[] = tagState.value?.data ?? [];
+  const hasShardError = state.shards.some(
+    (x) => groupEditorValidator(x).size > 0
+  );
 
   console.log('RealmEditor > ', props, state);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (hasShardError) {
+      return;
+    }
 
     const payload = {
       ...state.form,
-      tagList: state.tags.map((x) => ('code' in x ? x : { name: x.name }))
+      tagList: state.tags.map((x) => ('code' in x ? x : { name: x.name })),
+      shards: state.shards
+        .filter((x) => filterFalsey(x.code))
+        .map((x) => ({
+          ...x,
+          id: x.id === 0 ? null : x.id,
+          entryList: x.entries.map((e) => ({
+            fragmentId: e.fragmentId
+          }))
+        }))
     };
 
     const response = await sendRequest(`realm/update`, {
@@ -99,7 +117,12 @@ function RealmEditor(props: RealmEditorProps) {
       body: JSON.stringify(payload)
     });
 
-    console.log('UPDATED..? >', response);
+    console.log(
+      '%c UPDATED..? >',
+      'color: purple; font-size: 16px;',
+      response,
+      state
+    );
 
     if (response.success) {
       props.onUpdate();
@@ -136,7 +159,7 @@ function RealmEditor(props: RealmEditorProps) {
             }
           />
           <div className="button-group">
-            <Button type="submit" btnStyle="primary">
+            <Button type="submit" btnStyle="primary" disabled={hasShardError}>
               Save
             </Button>
             <Button onClick={() => props.history.push(`/${realmCode}`)}>
@@ -146,12 +169,13 @@ function RealmEditor(props: RealmEditorProps) {
         </header>
         <div className="page-grid">
           <div className="page-grid__core">
-            <RealmGroups
-              baseUrl={realmCode}
-              data={state.shards}
-              onChange={(shards) => dispatch({ type: 'UpdateShard', shards })}
-            />
-            <div>
+            <div className="panel">
+              <RealmGroups
+                baseUrl={realmCode}
+                data={state.shards}
+                onChange={(shards) => dispatch({ type: 'UpdateShard', shards })}
+              />
+
               <TitleSeparator title="Tags" />
 
               <ChipListInput

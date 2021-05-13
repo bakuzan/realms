@@ -106,7 +106,8 @@ namespace Wiki.Services
                 return response;
             }
 
-            var realm = await _realmDataService.GetAsync<Realm>(request.Id, x => x.Tags);
+            var realm = await _realmDataService.GetRealmById(request.Id);
+
             if (realm == null)
             {
                 response.ErrorMessages.Add("Realm not found.");
@@ -126,9 +127,6 @@ namespace Wiki.Services
                 return response;
             }
 
-            // TODO
-            // Update realm shards...
-
             // Update tags
             var oldTagIds = request.TagList
                 .Where(x => x.Id.HasValue)
@@ -144,6 +142,7 @@ namespace Wiki.Services
             }
 
             await ProcessAndPersistNewTags(realm, request.TagList);
+            ProcessAndPersistRealmShards(realm, request.Shards);
 
             // Save and return
             _realmDataService.SetToPersist(realm);
@@ -242,6 +241,122 @@ namespace Wiki.Services
             }
 
             return data;
+        }
+
+        private void ProcessAndPersistRealmShards(Realm realm, List<RealmShardInputModel> shards)
+        {
+            var allFragments = realm.Fragments.ToList();
+            var currentShards = realm.RealmShards.ToList();
+
+            var existingShards = shards
+                .Where(x => x.Id.HasValue);
+
+            var shardIds = existingShards
+                .Select(x => x.Id.Value);
+
+            // Update or Remove shards
+            foreach (var shard in currentShards)
+            {
+                if (shardIds.Contains(shard.Id))
+                {
+                    var update = existingShards.First(x => x.Id.Value == shard.Id);
+
+                    shard.Name = update.Name; // todo protect against empty names
+                    shard.IsOrdered = update.IsOrdered;
+
+                    var shardFragmentIds = update.EntryList.Select(x => x.FragmentId).ToList();
+                    var entryOrder = 0;
+
+                    foreach (var frag in shard.RealmShardEntries)
+                    {
+                        if (shardFragmentIds.Contains(frag.FragmentId))
+                        {
+                            frag.EntryOrder = shard.IsOrdered
+                                ? shardFragmentIds.IndexOf(frag.FragmentId)
+                                : null;
+
+                            entryOrder++;
+                            _realmDataService.SetToPersist(frag);
+                        }
+                        else
+                        {
+                            shard.RealmShardEntries.Remove(frag);
+                            _realmDataService.Delete(frag);
+                        }
+                    }
+
+                    var newFragments = update.EntryList.Where(x =>
+                        !shard.RealmShardEntries.Any(s => s.FragmentId == x.FragmentId));
+
+                    foreach (var inputFrag in newFragments)
+                    {
+                        var newFragEntry = new RealmShardEntry
+                        {
+                            EntryOrder = shard.IsOrdered ? entryOrder++ : null,
+                            FragmentId = inputFrag.FragmentId
+                        };
+
+                        _realmDataService.SetToPersist(newFragEntry);
+                        shard.RealmShardEntries.Add(newFragEntry);
+                    }
+
+                    _realmDataService.SetToPersist(shard);
+                }
+                else
+                {
+                    realm.RealmShards.Remove(shard);
+                    _realmDataService.Delete(shard);
+                }
+            }
+
+            var newShards = shards.Where(x => !x.Id.HasValue);
+
+            // Add shards
+            foreach (var input in newShards)
+            {
+                var newRealmShard = new RealmShard
+                {
+                    Name = input.Name, // todo protect against empty names
+                    IsOrdered = input.IsOrdered,
+                    RealmId = realm.Id
+                };
+
+                ValidateAndSetRealmShardCode(realm, newRealmShard);
+
+                var entryOrder = 0;
+                foreach (var frag in input.EntryList)
+                {
+                    var entry = new RealmShardEntry
+                    {
+                        EntryOrder = newRealmShard.IsOrdered ? entryOrder++ : null,
+                        FragmentId = frag.FragmentId,
+                    };
+
+                    _realmDataService.SetToPersist(entry);
+                    newRealmShard.RealmShardEntries.Add(entry);
+                }
+
+                _realmDataService.SetToPersist(newRealmShard);
+                realm.RealmShards.Add(newRealmShard);
+            }
+
+        }
+
+        private void ValidateAndSetRealmShardCode(Realm realm, RealmShard shard)
+        {
+            var code = shard.Name.GenerateSlug();
+            var matches = realm.RealmShards
+                .Where(x =>
+                    x.Code == code
+                    || x.Code.StartsWith($"{code}_"))
+                .ToList();
+
+            if (matches.Count > 0)
+            {
+                code += $"_{matches.Count}";
+            }
+
+            shard.Code = code;
         }
 
         #endregion

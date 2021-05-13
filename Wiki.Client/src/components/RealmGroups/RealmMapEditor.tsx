@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import slugify from 'ayaka/slugify';
+import filterFalsey from 'ayaka/helpers/filterFalsey';
+import generateUniqueId from 'ayaka/generateUniqueId';
+import { EventCodes } from 'meiko/constants/enums';
 import Grid from 'meiko/Grid';
 import ClearableInput from 'meiko/ClearableInput';
 import { Button } from 'meiko/Button';
@@ -16,20 +18,41 @@ interface RealmMapEditorProps {
 }
 
 export default function RealmMapEditor(props: RealmMapEditorProps) {
-  const [error, setError] = useState('');
   const [newName, setNewName] = useState('');
-  const fragmentGroups = props.data.filter((x) => x.code !== '');
-  const allFragments = props.data.reduce(
-    (p, c) => [...p, ...c.entries],
-    [] as RealmShardEntry[]
+  const disableAddGroup = !newName;
+
+  const fragmentGroups = props.data.slice(0);
+  const filteredFragmentGroups = fragmentGroups.filter((x) =>
+    filterFalsey(x.code)
   );
+  const [allFragments] = useState(() =>
+    props.data
+      .reduce((p, c) => [...p, ...c.entries], [] as RealmShardEntry[])
+      .map((x) => ({ ...x, id: 0, entryOrder: undefined }))
+  );
+
+  function onAddNewGroup() {
+    const name = newName;
+    props.onChange([
+      ...fragmentGroups,
+      {
+        id: 0,
+        name,
+        code: generateUniqueId(),
+        isOrdered: false,
+        entries: []
+      }
+    ]);
+
+    setNewName('');
+  }
 
   return (
     <FragmentContext.Provider value={allFragments}>
       <div className="realm-groups-editor">
         <Grid
           className="groups-editor"
-          items={fragmentGroups}
+          items={filteredFragmentGroups}
           noItemsText={false}
         >
           {(item: RealmShard) => {
@@ -37,60 +60,49 @@ export default function RealmMapEditor(props: RealmMapEditorProps) {
               <GroupEditor
                 key={item.code}
                 data={item}
-                onUpdate={(x) =>
-                  props.onChange(
-                    fragmentGroups.map((f) => (f.code === x.code ? x : f))
-                  )
-                }
-                onRemove={(code) =>
-                  props.onChange(fragmentGroups.filter((f) => f.code !== code))
-                }
+                onUpdate={(x) => {
+                  const shards = fragmentGroups.map((f) =>
+                    f.code === x.code ? x : f
+                  );
+
+                  props.onChange(shards);
+                }}
+                onRemove={(code) => {
+                  const shards = fragmentGroups.filter(
+                    (f) => !f.code || f.code !== code
+                  );
+
+                  props.onChange(shards);
+                }}
               />
             );
           }}
         </Grid>
         <div className="realm-groups-editor__controls">
-          <div>
-            <ClearableInput
-              id="addRealmGrouping"
-              name="newGroupName"
-              label="New Group Name"
-              placeholder="What would you like to call the new group?"
-              value={newName}
-              onChange={(e) => {
-                const tempName = e.currentTarget.value;
-                const slugName = slugify(tempName);
+          <ClearableInput
+            id="addRealmGrouping"
+            name="newGroupName"
+            label="New Group Name"
+            placeholder="What would you like to call the new group?"
+            value={newName}
+            onChange={(e) => setNewName(e.currentTarget?.value ?? '')}
+            onKeyDown={(event) => {
+              if (event.code === EventCodes.Enter) {
+                event.preventDefault();
+                event.stopPropagation();
 
-                if (
-                  tempName &&
-                  fragmentGroups.some((x) => x.code === slugName)
-                ) {
-                  setError('Name must be unique within realm.');
+                if (!disableAddGroup) {
+                  onAddNewGroup();
                 }
+              }
+            }}
+          />
 
-                setNewName(tempName);
-              }}
-            />
-            <div className="realm-groups-editor__error">{error}</div>
-          </div>
           <Button
             className="realm-groups-editor__add"
             btnStyle="primary"
-            disabled={!newName}
-            onClick={() => {
-              const name = newName;
-
-              props.onChange([
-                ...fragmentGroups,
-                {
-                  id: 0,
-                  name,
-                  code: slugify(name),
-                  isOrdered: false,
-                  entries: []
-                }
-              ]);
-            }}
+            disabled={disableAddGroup}
+            onClick={onAddNewGroup}
           >
             Add {newName || 'New'} Group
           </Button>

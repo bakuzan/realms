@@ -1,0 +1,62 @@
+%fixIconButton {
+  flex: none;
+
+  &::before {
+    font-size: 1rem;
+  }
+}
+
+.group-editor {
+  border: 1px dashed var(--accent-colour);
+
+  &__meta-controls {
+    display: flex;
+    align-items: center;
+  }
+
+  &__input-control {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__error {
+    font-size: 0.8rem;
+    margin: 5px 5px 10px 10px;
+    color: var(--danger-colour);
+  }
+
+  &__remove {
+    @extend %fixIconButton;
+
+    &::before {
+      color: var(--danger-colour);
+    }
+  }
+
+  &__list {
+    width: 50%;
+    max-width: 500px;
+    margin: 15px;
+  }
+}
+
+.group-fragment {
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px dotted var(--accent-colour);
+
+  &:first-child {
+    border-top: 1px dotted var(--accent-colour);
+  }
+
+  &__remove,
+  &__up,
+  &__down {
+    @extend %fixIconButton;
+  }
+
+  &__remove::before {
+    color: var(--danger-colour);
+  }
+}
