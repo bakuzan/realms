@@ -5,11 +5,11 @@ import generateUniqueId from 'ayaka/generateUniqueId';
 import { Button } from 'meiko/Button';
 import ClearableInput from 'meiko/ClearableInput';
 import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
+import { useAsync } from 'meiko/hooks/useAsync';
 
 import Markdown from 'src/components/Markdown';
 import ErrorDisplay from 'src/components/ErrorDisplay';
 
-import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 import { mapTagToChipListOption } from 'src/utils/mappers';
 

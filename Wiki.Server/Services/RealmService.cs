@@ -265,9 +265,9 @@ namespace Wiki.Services
                     shard.IsOrdered = update.IsOrdered;
 
                     var shardFragmentIds = update.EntryList.Select(x => x.FragmentId).ToList();
-                    var entryOrder = 0;
+                    var entries = shard.RealmShardEntries.ToList();
 
-                    foreach (var frag in shard.RealmShardEntries)
+                    foreach (var frag in entries)
                     {
                         if (shardFragmentIds.Contains(frag.FragmentId))
                         {
@@ -275,13 +275,11 @@ namespace Wiki.Services
                                 ? shardFragmentIds.IndexOf(frag.FragmentId)
                                 : null;
 
-                            entryOrder++;
                             _realmDataService.SetToPersist(frag);
                         }
                         else
                         {
                             shard.RealmShardEntries.Remove(frag);
-                            _realmDataService.Delete(frag);
                         }
                     }
 
@@ -292,7 +290,7 @@ namespace Wiki.Services
                     {
                         var newFragEntry = new RealmShardEntry
                         {
-                            EntryOrder = shard.IsOrdered ? entryOrder++ : null,
+                            EntryOrder = shard.IsOrdered ? shardFragmentIds.IndexOf(inputFrag.FragmentId) : null,
                             FragmentId = inputFrag.FragmentId
                         };
 
@@ -305,7 +303,6 @@ namespace Wiki.Services
                 else
                 {
                     realm.RealmShards.Remove(shard);
-                    _realmDataService.Delete(shard);
                 }
             }
 

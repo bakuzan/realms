@@ -7,5 +7,8 @@ export default function groupEditorValidator(shard: RealmShard) {
     errors.set('name', 'Name is required');
   }
 
+  // todo
+  // consider checking if the shard has any fragments
+
   return errors;
 }

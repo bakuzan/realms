@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import TagCloudSelector from 'meiko/TagCloudSelector';
+import { useAsync } from 'meiko/hooks/useAsync';
 
 import Markdown from 'src/components/Markdown';
 import GuardResponseState from 'src/components/GuardResponseState';
@@ -9,7 +10,6 @@ import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 import TitleSeparator from 'src/components/TitleSeparator';
 import RealmsLink from 'src/components/RealmsLink';
 
-import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 
 import { FragmentView } from 'src/interfaces/Fragment';

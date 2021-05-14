@@ -8,12 +8,12 @@ import { Button } from 'meiko/Button';
 import ClearableInput from 'meiko/ClearableInput';
 import Tickbox from 'meiko/Tickbox';
 import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
+import { useAsync } from 'meiko/hooks/useAsync';
 
 import TitleSeparator from 'src/components/TitleSeparator';
 import ErrorDisplay from 'src/components/ErrorDisplay';
 import RealmGroups from 'src/components/RealmGroups';
 
-import { useAsync } from 'src/hooks/useAsync';
 import sendRequest from 'src/utils/sendRequest';
 import { mapTagToChipListOption } from 'src/utils/mappers';
 
@@ -87,7 +87,7 @@ function RealmEditor(props: RealmEditorProps) {
 
   const tagOptions: ChipListOption[] = tagState.value?.data ?? [];
   const hasShardError = state.shards.some(
-    (x) => groupEditorValidator(x).size > 0
+    (x) => x.code && groupEditorValidator(x).size > 0
   );
 
   console.log('RealmEditor > ', props, state);

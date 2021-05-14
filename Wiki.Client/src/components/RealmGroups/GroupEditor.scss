@@ -8,6 +8,7 @@
 
 .group-editor {
   border: 1px dashed var(--accent-colour);
+  box-shadow: 0 0 5px 1px var(--accent-colour-hover);
 
   &__meta-controls {
     display: flex;
@@ -21,12 +22,15 @@
 
   &__error {
     font-size: 0.8rem;
-    margin: 5px 5px 10px 10px;
+    margin: 0 10px;
+    min-height: 0.8rem;
     color: var(--danger-colour);
   }
 
   &__remove {
     @extend %fixIconButton;
+    align-self: flex-start;
+    margin: 5px;
 
     &::before {
       color: var(--danger-colour);

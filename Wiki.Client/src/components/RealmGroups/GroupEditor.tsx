@@ -19,6 +19,9 @@ import './GroupEditor.scss';
 
 export const FragmentContext = React.createContext([] as RealmShardEntry[]);
 
+const getInputText = (e: React.FormEvent<HTMLInputElement>) =>
+  e.currentTarget?.value ?? '';
+
 interface GroupEditorProps {
   data: RealmShard;
   onUpdate: (data: RealmShard) => void;
@@ -60,13 +63,12 @@ export default function GroupEditor(props: GroupEditorProps) {
             onChange={(e) =>
               props.onUpdate({
                 ...props.data,
-                name: e.currentTarget.value
+                name: getInputText(e)
               })
             }
           />
-          {errors.has('name') && (
-            <p className="group-editor__error">{errors.get('name')}</p>
-          )}
+
+          <p className="group-editor__error">{errors.get('name')}</p>
         </div>
 
         <Tickbox
@@ -99,7 +101,7 @@ export default function GroupEditor(props: GroupEditorProps) {
             id: x.fragmentId,
             name: x.fragmentName
           }))}
-          onChange={(e) => setFilter(e.currentTarget?.value ?? '')}
+          onChange={(e) => setFilter(getInputText(e))}
           onSelect={(fragmentId) => {
             const selected = fragmentOptions.find(
               (f) => f.fragmentId === fragmentId
