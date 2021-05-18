@@ -9,6 +9,7 @@ namespace Wiki.Services
     public interface IFragmentService
     {
         Task<FragmentResponse> GetFragmentByCode(ClaimsPrincipal claim, string code);
+        Task<FragmentDetailResponse> GetFragmentDetail(ClaimsPrincipal claim, string code);
         Task<FragmentCreateUpdateResponse> CreateFragment(ClaimsPrincipal claim, FragmentCreateRequest request);
         Task<FragmentCreateUpdateResponse> UpdateFragment(ClaimsPrincipal claim, FragmentUpdateRequest request);
 

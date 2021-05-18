@@ -29,8 +29,10 @@ function MapItem({ baseUrl, data }: MapItemProps) {
       <Grid
         className={classNames(
           'realm-group__entries',
-          'realm-group__entries--grouped'
+          'realm-group__entries--grouped',
+          { 'realm-group__entries--ordered': data.isOrdered }
         )}
+        element={data.isOrdered ? 'ol' : undefined}
         items={data.entries}
         noItemsText={noItemsText}
       >
@@ -49,7 +51,7 @@ function MapItem({ baseUrl, data }: MapItemProps) {
               onMouseLeave={() => setHighlightIndex(-1)}
             >
               <RealmsLink
-                className="realm-fragment"
+                className="realm-fragment realm-fragment--go"
                 to={`${baseUrl}/${item.fragmentCode}`}
               >
                 {item.fragmentName}
@@ -94,7 +96,7 @@ function RealmMap(props: RealmMapProps) {
                 )}
               >
                 <RealmsLink
-                  className="realm-fragment"
+                  className="realm-fragment realm-fragment--go"
                   to={`${props.baseUrl}/${item.fragmentCode}`}
                 >
                   {item.fragmentName}

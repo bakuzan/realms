@@ -29,9 +29,12 @@ namespace Wiki.Controllers
             return await _fragmentService.GetFragmentByCode(User, code);
         }
 
-        // todo
-        // create a fragment by code detailed endpoint
-        // this will return a the fragment view with related fragments (that is not in the default fragment by code)
+        [HttpGet]
+        [Route("{code}/detail")]
+        public async Task<FragmentDetailResponse> GetDetail(string code)
+        {
+            return await _fragmentService.GetFragmentDetail(User, code);
+        }
 
         [Authorize]
         [HttpPost]

@@ -29,5 +29,16 @@ namespace Wiki.Data
                 .ToListAsync();
         }
 
+        public async Task<List<RealmShard>> GetOrderedShardsFragmentBelongsTo(int fragmentId)
+        {
+            return await _context.RealmShards
+                .Include(x => x.RealmShardEntries).ThenInclude(x => x.Fragment)
+                .Include(x => x.Realm)
+                .Where(x =>
+                    x.RealmShardEntries.Any(s => s.FragmentId == fragmentId)
+                    && x.IsOrdered)
+                .ToListAsync();
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Wiki.Data;
+using Wiki.Enums;
 using Wiki.Extensions;
 using Wiki.ViewModels.Fragment;
 using Wiki.ViewModels.Tag;
@@ -49,6 +50,36 @@ namespace Wiki.Services
             else
             {
                 response.Data = _mapper.Map<FragmentViewModel>(fragment);
+            }
+
+            return response;
+        }
+
+        public async Task<FragmentDetailResponse> GetFragmentDetail(ClaimsPrincipal claim, string code)
+        {
+            var response = new FragmentDetailResponse();
+
+            var user = await _userService.GetCurrentUser(claim);
+            var userId = user == null ? string.Empty : user.Id;
+
+            var fragment = await _fragmentDataService.GetFragmentAsync(code);
+
+            if (fragment == null)
+            {
+                response.ErrorMessages.Add($"Fragment(code: {code}) was not found.");
+            }
+            else if (fragment.Realm.IsAuthenticationRestricted && claim == null)
+            {
+                response.ErrorMessages.Add($"Fragment(code: {code}) belongs to a realm that requires you to be authenticated to view it.");
+            }
+            else if (fragment.Realm.IsPrivate && fragment.Realm.ApplicationUserId != userId)
+            {
+                response.ErrorMessages.Add($"Fragment(code: {code}) belongs to a private realm.");
+            }
+            else
+            {
+                response.Data = _mapper.Map<FragmentDetailViewModel>(fragment);
+                response.Data.RelatedFragments = await GetRelatedFragments(fragment);
             }
 
             return response;
@@ -208,6 +239,41 @@ namespace Wiki.Services
                 {
                     fragment.Tags.Add(tag);
                 }
+            }
+        }
+
+        private async Task<List<FragmentRelationViewModel>> GetRelatedFragments(Fragment fragment)
+        {
+            var items = new List<FragmentRelationViewModel>();
+            var shards = await _fragmentDataService.GetOrderedShardsFragmentBelongsTo(fragment.Id);
+
+            if (shards.Any())
+            {
+                foreach (var shard in shards)
+                {
+                    var entries = shard.RealmShardEntries.ToList();
+                    var entry = entries.First(x => x.FragmentId == fragment.Id);
+                    var index = entries.IndexOf(entry);
+
+                    MapShardEntryToFragmentRelation(items, entries[index - 1], FragmentRelation.Previous);
+                    MapShardEntryToFragmentRelation(items, entries[index + 1], FragmentRelation.Next);
+                }
+            }
+
+            return items;
+        }
+
+        private void MapShardEntryToFragmentRelation(
+            List<FragmentRelationViewModel> items,
+            RealmShardEntry entry,
+            FragmentRelation relation)
+        {
+            if (entry != null)
+            {
+                var item = _mapper.Map<FragmentRelationViewModel>(entry);
+                item.FragmentRelation = relation;
+
+                items.Add(item);
             }
         }
 

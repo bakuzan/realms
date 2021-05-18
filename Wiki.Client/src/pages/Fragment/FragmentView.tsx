@@ -7,12 +7,13 @@ import { useAsync } from 'meiko/hooks/useAsync';
 import Markdown from 'src/components/Markdown';
 import GuardResponseState from 'src/components/GuardResponseState';
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
+import RelatedFragments from 'src/components/RelatedFragments';
 import TitleSeparator from 'src/components/TitleSeparator';
 import RealmsLink from 'src/components/RealmsLink';
 
 import sendRequest from 'src/utils/sendRequest';
 
-import { FragmentView } from 'src/interfaces/Fragment';
+import { FragmentDetailView } from 'src/interfaces/Fragment';
 import { RealmView } from 'src/interfaces/Realm';
 import { PageProps } from 'src/interfaces/PageProps';
 
@@ -26,7 +27,8 @@ function FragmentViewPage(props: FragmentViewProps) {
 
   const { fragmentCode } = props.match.params;
   const state = useAsync(
-    async () => sendRequest<FragmentView>(`fragment/${fragmentCode}`),
+    async () =>
+      sendRequest<FragmentDetailView>(`fragment/${fragmentCode}/detail`),
     [fragmentCode]
   );
 
@@ -72,10 +74,7 @@ function FragmentViewPage(props: FragmentViewProps) {
                 </div>
               </div>
               <div className="page-grid__sidebar">
-                here we need related pages/links
-                <br />
-                this will be based on the realm groupings and tags
-                <br />
+                <RelatedFragments data={fragment.relatedFragments} />
               </div>
             </div>
           </div>

@@ -44,17 +44,31 @@
 
   &::after {
     position: absolute;
-    right: 0;
-    content: ' >> ';
     opacity: 0;
     visibility: hidden;
     transition: all 1s ease-in-out;
   }
-
   &:hover::after {
-    right: -25px;
     opacity: 1;
     visibility: visible;
+  }
+
+  &--prev::after {
+    content: ' << ';
+    left: 0;
+  }
+  &--prev:hover::after {
+    left: -25px;
+  }
+
+  &--next::after,
+  &--go::after {
+    content: ' >> ';
+    right: 0;
+  }
+  &--next:hover::after,
+  &--go:hover::after {
+    right: -25px;
   }
 }
 
@@ -76,4 +90,14 @@
 
 .groups-editor {
   gap: 5px;
+}
+
+// for ordered lists (ol)
+.realm-group__entries--ordered {
+  list-style-type: upper-roman;
+
+  .realm-group__item::before,
+  .realm-group__item::after {
+    content: none;
+  }
 }

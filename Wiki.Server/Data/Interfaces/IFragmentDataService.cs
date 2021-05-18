@@ -7,6 +7,7 @@ namespace Wiki.Data
     {
         Task<Fragment> GetFragmentAsync(string code);
         Task<List<Fragment>> GetFragmentsForRealm(int realmId);
+        Task<List<RealmShard>> GetOrderedShardsFragmentBelongsTo(int fragmentId);
 
     }
 }

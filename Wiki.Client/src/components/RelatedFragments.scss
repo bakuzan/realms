@@ -1,0 +1,26 @@
+.related-fragments {
+  &__title {
+    margin: 0;
+  }
+
+  &__groups {
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  &__shard-name {
+    margin: 0;
+  }
+}
+
+.prev-next-block {
+  display: flex;
+
+  > .realm-fragment {
+    margin: 0 auto;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
