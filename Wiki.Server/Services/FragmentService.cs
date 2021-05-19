@@ -255,8 +255,21 @@ namespace Wiki.Services
                     var entry = entries.First(x => x.FragmentId == fragment.Id);
                     var index = entries.IndexOf(entry);
 
-                    MapShardEntryToFragmentRelation(items, entries[index - 1], FragmentRelation.Previous);
-                    MapShardEntryToFragmentRelation(items, entries[index + 1], FragmentRelation.Next);
+                    if (index != 0)
+                    {
+                        MapShardEntryToFragmentRelation(
+                            items,
+                            entries[index - 1],
+                            FragmentRelation.Previous);
+                    }
+
+                    if (index + 1 < entries.Count)
+                    {
+                        MapShardEntryToFragmentRelation(
+                            items,
+                            entries[index + 1],
+                            FragmentRelation.Next);
+                    }
                 }
             }
 

@@ -17,6 +17,7 @@ function HeaderBar() {
           <NavLink
             className="application-header__brand"
             to="/"
+            exact
             aria-label="Home"
           >
             <span aria-hidden={true}>{AppName}</span>

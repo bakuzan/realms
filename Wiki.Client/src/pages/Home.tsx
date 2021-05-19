@@ -5,15 +5,19 @@ import { Helmet } from 'react-helmet';
 
 import ClearableInput from 'meiko/ClearableInput';
 import Grid from 'meiko/Grid';
+import TagCloudSelector from 'meiko/TagCloudSelector';
+import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
 import { useAsync } from 'meiko/hooks/useAsync';
 
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
 import GuardResponseState from 'src/components/GuardResponseState';
+import TitleSeparator from 'src/components/TitleSeparator';
 import RealmsLink from 'src/components/RealmsLink';
 
 import sendRequest from 'src/utils/sendRequest';
 
 import { RealmItem } from 'src/interfaces/Realm';
+import { TagOption } from 'src/interfaces/Tag';
 import { AppName } from 'src/constants';
 
 import './Home.scss';
@@ -25,6 +29,13 @@ function Home(props: any) {
     async () => await sendRequest<RealmItem[]>('realm/getall'),
     []
   );
+
+  const tagState = useAsync(
+    async () => sendRequest<TagOption[]>(`tag/getrealmtags`),
+    []
+  );
+
+  const tagOptions = tagState.value?.data ?? [];
 
   console.log('Home Hub > ', props, state);
 
@@ -95,6 +106,25 @@ function Home(props: any) {
                   );
                 }}
               </Grid>
+
+              <div>
+                <TitleSeparator title="Tags" />
+                <TagCloudSelector
+                  className="rlm-tag-cloud"
+                  tagClass="rlm-tag"
+                  name="tags"
+                  tagOptions={tagOptions.map((x) => ({
+                    id: x.id ?? 0,
+                    name: x.name
+                  }))}
+                  onSelect={() =>
+                    console.log(
+                      '%c TODO > Make this go to a page of realms with this tag...',
+                      'color:red; font-size:18px;'
+                    )
+                  }
+                />
+              </div>
             </div>
           );
         }}

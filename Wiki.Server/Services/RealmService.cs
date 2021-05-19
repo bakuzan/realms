@@ -142,7 +142,11 @@ namespace Wiki.Services
             }
 
             await ProcessAndPersistNewTags(realm, request.TagList);
-            ProcessAndPersistRealmShards(realm, request.Shards);
+            var shardResponse = ProcessAndPersistRealmShards(realm, request.Shards);
+            if (!shardResponse.Success)
+            {
+                return shardResponse;
+            }
 
             // Save and return
             _realmDataService.SetToPersist(realm);
@@ -243,8 +247,9 @@ namespace Wiki.Services
             return data;
         }
 
-        private void ProcessAndPersistRealmShards(Realm realm, List<RealmShardInputModel> shards)
+        private RealmUpdateResponse ProcessAndPersistRealmShards(Realm realm, List<RealmShardInputModel> shards)
         {
+            var response = new RealmUpdateResponse();
             var allFragments = realm.Fragments.ToList();
             var currentShards = realm.RealmShards.ToList();
 
@@ -260,8 +265,13 @@ namespace Wiki.Services
                 if (shardIds.Contains(shard.Id))
                 {
                     var update = existingShards.First(x => x.Id.Value == shard.Id);
+                    if (string.IsNullOrEmpty(update.Name))
+                    {
+                        response.ErrorMessages.Add("Shard Name is required.");
+                        return response;
+                    }
 
-                    shard.Name = update.Name; // todo protect against empty names
+                    shard.Name = update.Name;
                     shard.IsOrdered = update.IsOrdered;
 
                     var shardFragmentIds = update.EntryList.Select(x => x.FragmentId).ToList();
@@ -311,9 +321,15 @@ namespace Wiki.Services
             // Add shards
             foreach (var input in newShards)
             {
+                if (string.IsNullOrEmpty(input.Name))
+                {
+                    response.ErrorMessages.Add("Shard Name is required.");
+                    return response;
+                }
+
                 var newRealmShard = new RealmShard
                 {
-                    Name = input.Name, // todo protect against empty names
+                    Name = input.Name,
                     IsOrdered = input.IsOrdered,
                     RealmId = realm.Id
                 };
@@ -337,6 +353,7 @@ namespace Wiki.Services
                 realm.RealmShards.Add(newRealmShard);
             }
 
+            return response;
         }
 
         private void ValidateAndSetRealmShardCode(Realm realm, RealmShard shard)
