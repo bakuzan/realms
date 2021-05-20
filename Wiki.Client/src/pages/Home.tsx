@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet';
 import ClearableInput from 'meiko/ClearableInput';
 import Grid from 'meiko/Grid';
 import TagCloudSelector from 'meiko/TagCloudSelector';
-import ChipListInput, { ChipListOption } from 'meiko/ChipListInput';
 import { useAsync } from 'meiko/hooks/useAsync';
 
 import GuardWithAuthorisation from 'src/components/GuardWithAuthorisation';
@@ -114,14 +113,11 @@ function Home(props: any) {
                   tagClass="rlm-tag"
                   name="tags"
                   tagOptions={tagOptions.map((x) => ({
-                    id: x.id ?? 0,
+                    id: x.code,
                     name: x.name
                   }))}
-                  onSelect={() =>
-                    console.log(
-                      '%c TODO > Make this go to a page of realms with this tag...',
-                      'color:red; font-size:18px;'
-                    )
+                  onSelect={(selected) =>
+                    props.history.push(`/by-tag?tag=${selected}`)
                   }
                 />
               </div>

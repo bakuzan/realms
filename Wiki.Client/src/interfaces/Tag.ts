@@ -14,5 +14,21 @@ export interface TagInput {
 
 export interface TagOption {
   id: number;
+  code: string;
   name: string;
+}
+
+export interface TagRelatedItem {
+  id: number;
+  code: string;
+  name: string;
+  fragmentCount?: number;
+  realmCode?: string;
+  tagScope: TagScope;
+}
+
+export interface WithTagsResponse {
+  realmName?: string;
+  tags: Tag[];
+  items: TagRelatedItem[];
 }

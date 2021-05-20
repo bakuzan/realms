@@ -61,13 +61,12 @@ function FragmentViewPage(props: FragmentViewProps) {
                     tagClass="rlm-tag"
                     name="tags"
                     tagOptions={fragment.tags.map((x) => ({
-                      id: x.id ?? 0,
+                      id: x.code,
                       name: x.name
                     }))}
-                    onSelect={() =>
-                      console.log(
-                        '%c TODO > Make this go to a page of fragments with this tag...',
-                        'color:red; font-size:18px;'
+                    onSelect={(selected) =>
+                      props.history.push(
+                        `/by-tag/${realm.code}?tag=${selected}`
                       )
                     }
                   />

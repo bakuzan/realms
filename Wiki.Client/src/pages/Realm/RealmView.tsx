@@ -51,12 +51,9 @@ function RealmViewPage(props: RealmViewProps) {
             className="rlm-tag-cloud"
             tagClass="rlm-tag"
             name="tags"
-            tagOptions={data.tags.map((x) => ({ id: x.id ?? 0, name: x.name }))}
-            onSelect={() =>
-              console.log(
-                '%c TODO > Make this go to a page of realms with this tag...',
-                'color:red; font-size:18px;'
-              )
+            tagOptions={data.tags.map((x) => ({ id: x.code, name: x.name }))}
+            onSelect={(selected) =>
+              props.history.push(`/by-tag?tag=${selected}`)
             }
           />
         </div>

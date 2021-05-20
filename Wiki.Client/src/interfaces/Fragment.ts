@@ -1,6 +1,13 @@
 import { FragmentRelation } from 'src/constants';
 import { Tag } from './Tag';
 
+export interface FragmentItem {
+  id: number;
+  name: string;
+  code: string;
+  realmCode: string;
+}
+
 export interface Fragment {
   id: number;
   name: string;

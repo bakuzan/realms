@@ -1,0 +1,16 @@
+.by-tag {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__subtitle {
+    margin: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+}
+
+.tag-related-items {
+  margin: 25px 0;
+}

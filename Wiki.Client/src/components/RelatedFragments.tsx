@@ -49,6 +49,10 @@ function RelatedFragments(props: RelatedFragmentsProps) {
                     const isPrev =
                       x.fragmentRelation === FragmentRelation.Previous;
 
+                    const titleText = isNext
+                      ? `Go to the next fragment, ${x.name}`
+                      : `Go to the previous fragment, ${x.name}`;
+
                     return (
                       <RealmsLink
                         className={classNames('realm-fragment', {
@@ -56,8 +60,15 @@ function RelatedFragments(props: RelatedFragmentsProps) {
                           'realm-fragment--next': isNext
                         })}
                         to={`/${x.realmCode}/${x.code}`}
+                        title={titleText}
+                        aria-label={titleText}
                       >
-                        <span className="prev-next-block__name">{x.name}</span>
+                        <span
+                          className="prev-next-block__name"
+                          aria-hidden={true}
+                        >
+                          {x.name}
+                        </span>
                       </RealmsLink>
                     );
                   }

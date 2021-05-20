@@ -6,6 +6,7 @@ namespace Wiki.ViewModels.Fragment
         public string Name { get; set; }
         public string Code { get; set; }
 
+        public string RealmCode { get; set; }
 
     }
 

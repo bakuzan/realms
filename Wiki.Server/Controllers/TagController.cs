@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Wiki.Services;
+using Wiki.ViewModels.Fragment;
+using Wiki.ViewModels.Realm;
 using Wiki.ViewModels.Tag;
 
 namespace Wiki.Controllers
@@ -35,9 +37,19 @@ namespace Wiki.Controllers
             return await _tagService.GetFragmentTagsInRealm(User, realmCode);
         }
 
-        // todo
-        // get fragments for tag(s)
-        // get realms for tag(s)
+        [HttpPost]
+        [Route("{action}")]
+        public async Task<TagRelatedEntitiesResponse> GetRealmsWithTags(TagRelatedEntitiesRequest request)
+        {
+            return await _tagService.GetRealmsWithTags(User, request);
+        }
+
+        [HttpPost]
+        [Route("{action}")]
+        public async Task<TagRelatedEntitiesResponse> GetFragmentsWithTags(TagRelatedEntitiesRequest request)
+        {
+            return await _tagService.GetFragmentsWithTags(User, request);
+        }
 
 
     }

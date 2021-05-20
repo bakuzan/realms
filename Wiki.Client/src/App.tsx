@@ -11,6 +11,7 @@ import HeaderBar from './components/Header/HeaderBar';
 import Home from './pages/Home';
 import RealmHub from './pages/RealmHub';
 import RealmCreator from './pages/Realm/RealmCreator';
+import TagPage from './pages/Tag';
 import NotFound from './pages/NotFound';
 
 import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
@@ -42,6 +43,11 @@ function App() {
             component={ApiAuthorizationRoutes}
           />
 
+          <Route
+            exact
+            path={['/by-tag', '/by-tag/:realmCode']}
+            component={TagPage}
+          />
           <AuthorizeRoute exact path="/new-realm" component={RealmCreator} />
           <Route path="/:realmCode" component={RealmHub} />
 

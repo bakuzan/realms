@@ -8,7 +8,8 @@ namespace Wiki.Mapping
     {
         public FragmentProfile()
         {
-            CreateMap<Fragment, FragmentItemViewModel>();
+            CreateMap<Fragment, FragmentItemViewModel>()
+                .ForMember(d => d.RealmCode, s => s.MapFrom(x => x.Realm.Code));
 
             CreateMap<Fragment, FragmentViewModel>()
                 .ForMember(d => d.RealmOwnerUserId, s => s.MapFrom(x => x.Realm.ApplicationUserId));
