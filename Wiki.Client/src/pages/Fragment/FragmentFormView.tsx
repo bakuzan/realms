@@ -112,8 +112,6 @@ function FragmentFormView(props: FragmentFormViewProps) {
       body: JSON.stringify(payload)
     });
 
-    console.log('FORM Response..? >', response);
-
     if (response.success) {
       props.history.push(`/${realmCode}/${response.data.code}`);
     } else {
@@ -123,8 +121,6 @@ function FragmentFormView(props: FragmentFormViewProps) {
       });
     }
   }
-
-  console.log('FragmentFormView >> ', props);
 
   return (
     <div className="page">

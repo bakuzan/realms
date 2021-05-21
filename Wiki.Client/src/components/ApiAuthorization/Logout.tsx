@@ -1,5 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+
+import LoadingBouncer from 'meiko/LoadingBouncer';
+
 import authService, { AuthState } from './AuthorizeService';
 import { AuthenticationResultStatus } from './AuthorizeService';
 import {
@@ -16,6 +20,7 @@ interface LogoutState {
   authenticated: boolean;
   isReady: boolean;
   message: undefined | null | string | Error;
+  redirectToHome: boolean;
 }
 
 // The main responsibility of this component is to handle the user's logout process.
@@ -30,7 +35,8 @@ export class Logout extends Component<LogoutProps, LogoutState> {
     this.state = {
       authenticated: false,
       isReady: false,
-      message: undefined
+      message: undefined,
+      redirectToHome: false
     };
   }
 
@@ -54,7 +60,8 @@ export class Logout extends Component<LogoutProps, LogoutState> {
       case LogoutActions.LoggedOut:
         this.setState({
           isReady: true,
-          message: 'You successfully logged out!'
+          message: 'You successfully logged out!',
+          redirectToHome: true
         });
         break;
       default:
@@ -71,17 +78,24 @@ export class Logout extends Component<LogoutProps, LogoutState> {
       return <div></div>;
     }
 
+    if (this.state.redirectToHome) {
+      return <Redirect to="/" />;
+    }
+
     if (!!message) {
       return <div>{message}</div>;
     } else {
       const action = this.props.action;
       switch (action) {
         case LogoutActions.Logout:
-          return <div>Processing logout</div>;
         case LogoutActions.LogoutCallback:
-          return <div>Processing logout callback</div>;
+          return (
+            <div>
+              <LoadingBouncer />
+            </div>
+          );
         case LogoutActions.LoggedOut:
-          return <div>{message}</div>;
+          return <Redirect to="/" />;
         default:
           throw new Error(`Invalid action '${action}'`);
       }

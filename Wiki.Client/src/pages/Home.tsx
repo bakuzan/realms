@@ -36,8 +36,6 @@ function Home(props: any) {
 
   const tagOptions = tagState.value?.data ?? [];
 
-  console.log('Home Hub > ', props, state);
-
   return (
     <div className="home">
       <Helmet title="Hub" />
@@ -51,8 +49,6 @@ function Home(props: any) {
       </header>
       <GuardResponseState state={state}>
         {(response) => {
-          console.log('Hub Response > ', props, state);
-
           const hasFilter = !!filter;
           const filterLower = filter.toLowerCase();
           const noItemsText = !hasFilter

@@ -90,8 +90,6 @@ function RealmEditor(props: RealmEditorProps) {
     (x) => x.code && groupEditorValidator(x).size > 0
   );
 
-  console.log('RealmEditor > ', props, state);
-
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (hasShardError) {
@@ -116,13 +114,6 @@ function RealmEditor(props: RealmEditorProps) {
       method: 'POST',
       body: JSON.stringify(payload)
     });
-
-    console.log(
-      '%c UPDATED..? >',
-      'color: purple; font-size: 16px;',
-      response,
-      state
-    );
 
     if (response.success) {
       props.onUpdate();

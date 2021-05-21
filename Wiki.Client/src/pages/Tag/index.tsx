@@ -40,7 +40,6 @@ function TagPage(props: TagPageProps) {
     [realmCode, tagCode]
   );
 
-  console.log('PROPS', realmCode, searchParams, props);
   return (
     <GuardResponseState state={state}>
       {(response) => {
@@ -48,21 +47,31 @@ function TagPage(props: TagPageProps) {
         const tagName = listify(response.tags.map((x) => x.name));
         const items = response.items;
         const isEmpty = items.length === 0;
-        const tagPageSubtitle = realmCode
-          ? `Showing fragments in ${response.realmName} for ${tagName}`
-          : `Showing realms for ${tagName}`;
 
         return (
-          <div className="by-tag">
+          <div className="page">
             <Helmet title={tagPageTitle} />
-            <header className="by-tag__header">
+            <header className="page__header">
               <div>
-                <h2>{tagPageTitle}</h2>
-                <p className="by-tag__subtitle">{tagPageSubtitle}</p>
+                <h2 className="page__title">{tagPageTitle}</h2>
+                <p className="page__subtitle">
+                  Showing{' '}
+                  {realmCode ? (
+                    <React.Fragment>
+                      fragments in{' '}
+                      <RealmsLink exact to={`/${realmCode}`}>
+                        {response.realmName}
+                      </RealmsLink>
+                    </React.Fragment>
+                  ) : (
+                    'realms'
+                  )}{' '}
+                  for {tagName}
+                </p>
               </div>
-              <div>
+              <div className="button-group">
                 <Button
-                  btnStyle="accent"
+                  className="rlm-false-link"
                   onClick={() => props.history.goBack()}
                 >
                   Back

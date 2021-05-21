@@ -75,10 +75,10 @@ namespace Wiki.Services
             var tags = await _tagDataService
                 .GetTagsForScopeQuery(TagScope.Realm)
                 .Include(x => x.Realms)
+                .Where(x => request.TagCodes.Contains(x.Code))
                 .ToListAsync();
 
             var realmIds = tags
-                .Where(x => request.TagCodes.Contains(x.Code))
                 .SelectMany(x => x.Realms.Select(r => r.Id))
                 .Distinct()
                 .ToList();
@@ -109,12 +109,12 @@ namespace Wiki.Services
             var tags = await _tagDataService
                 .GetTagsForScopeQuery(TagScope.Fragment)
                 .Include(x => x.Fragments).ThenInclude(x => x.Realm)
-                .ToListAsync();
-
-            var fragments = tags
                 .Where(x =>
                     request.TagCodes.Contains(x.Code)
                     && x.Fragments.Any(f => f.RealmId == realm.Id))
+                .ToListAsync();
+
+            var fragments = tags
                 .SelectMany(x => x.Fragments)
                 .Distinct()
                 .ToList();

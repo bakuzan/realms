@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/ApiAuthorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/ApiAuthorization/ApiAuthorizationConstants';
+import Alert from 'src/components/Alert';
 import { AppName } from './constants';
 
 import './styles/index.scss';
@@ -34,7 +35,7 @@ function App() {
     >
       <Helmet defaultTitle={AppName} titleTemplate={`%s | ${AppName}`} />
       <HeaderBar />
-
+      <Alert />
       <main>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -55,7 +56,6 @@ function App() {
           <Route path="*" component={NotFound} />
         </Switch>
       </main>
-
       <ScrollTopButton />
     </div>
   );

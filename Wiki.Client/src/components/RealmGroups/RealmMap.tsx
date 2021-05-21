@@ -7,7 +7,9 @@ import RealmsLink from 'src/components/RealmsLink';
 
 import { RealmShard, RealmShardEntry } from 'src/interfaces/RealmShard';
 
-const noGroupsText = 'This realm currently has no pages.';
+const noGroupsText = `This realm is devoid of fragments...
+When you add new fragments, they will appear here.`;
+
 const noItemsText = 'Group contains no fragments.';
 
 interface RealmMapProps {

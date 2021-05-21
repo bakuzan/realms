@@ -34,7 +34,6 @@ function RealmPage(props: RealmPageProps) {
   return (
     <GuardResponseState state={state}>
       {(response) => {
-        console.log('Realm > ', props, state);
         const realmName = response.name;
 
         return (

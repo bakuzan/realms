@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+import { Button } from 'meiko/Button';
 import TagCloudSelector from 'meiko/TagCloudSelector';
 import { useAsync } from 'meiko/hooks/useAsync';
 
@@ -32,23 +33,38 @@ function FragmentViewPage(props: FragmentViewProps) {
     [fragmentCode]
   );
 
-  console.log('FragmentView >> ', props);
   return (
     <GuardResponseState state={state}>
       {(fragment) => {
-        console.log('Fragment > ', props, state);
         const fragmentName = fragment.name;
 
         return (
           <div className="page">
             <Helmet title={fragmentName} />
             <header className="page__header">
-              <h2>{fragmentName}</h2>
+              <div>
+                <h2 className="page__title">{fragmentName}</h2>
+                <p className="page__subtitle">
+                  of{' '}
+                  <RealmsLink exact to={`/${realm.code}`}>
+                    {realm.name}
+                  </RealmsLink>{' '}
+                  realm
+                </p>
+              </div>
               <GuardWithAuthorisation
                 isPrivate={realm.isPrivate}
                 ownerUserId={realm.realmOwnerUserId}
               >
-                <RealmsLink to={`${props.match.url}/edit`}>Edit</RealmsLink>
+                <div className="button-group">
+                  <RealmsLink to={`${props.match.url}/edit`}>Edit</RealmsLink>
+                  <Button
+                    className="rlm-false-link"
+                    onClick={() => props.history.goBack()}
+                  >
+                    Back
+                  </Button>
+                </div>
               </GuardWithAuthorisation>
             </header>
             <div className="page-grid">
@@ -56,20 +72,27 @@ function FragmentViewPage(props: FragmentViewProps) {
                 <Markdown data={fragment.content} />
                 <div>
                   <TitleSeparator title="Tags" />
-                  <TagCloudSelector
-                    className="rlm-tag-cloud"
-                    tagClass="rlm-tag"
-                    name="tags"
-                    tagOptions={fragment.tags.map((x) => ({
-                      id: x.code,
-                      name: x.name
-                    }))}
-                    onSelect={(selected) =>
-                      props.history.push(
-                        `/by-tag/${realm.code}?tag=${selected}`
-                      )
-                    }
-                  />
+                  {fragment.tags.length > 0 ? (
+                    <TagCloudSelector
+                      className="rlm-tag-cloud"
+                      tagClass="rlm-tag"
+                      name="tags"
+                      tagOptions={fragment.tags.map((x) => ({
+                        id: x.code,
+                        name: x.name
+                      }))}
+                      onSelect={(selected) =>
+                        props.history.push(
+                          `/by-tag/${realm.code}?tag=${selected}`
+                        )
+                      }
+                    />
+                  ) : (
+                    <p className="user-message">
+                      {fragment.name} currently has no tags. Consider setting
+                      some to improve searchability!
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="page-grid__sidebar">

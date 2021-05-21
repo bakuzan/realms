@@ -50,8 +50,6 @@ const realmCreatorDefaults = {
 function RealmCreator(props: RealmCreatorProps) {
   const [state, dispatch] = useReducer(reducer, realmCreatorDefaults);
 
-  console.log('RealmCreator > ', props);
-
   function onCancel() {
     props.history.goBack();
   }
@@ -62,8 +60,6 @@ function RealmCreator(props: RealmCreatorProps) {
       method: 'POST',
       body: JSON.stringify(payload)
     });
-
-    console.log('CREATED..? >', response);
 
     if (response.success) {
       props.history.push(`/${response.data.code}/edit`);

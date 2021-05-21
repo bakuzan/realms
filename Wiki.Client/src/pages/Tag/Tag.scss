@@ -1,16 +1,6 @@
-.by-tag {
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__subtitle {
-    margin: 0.5rem 0;
-    font-size: 0.8rem;
-  }
-}
-
 .tag-related-items {
+  display: grid;
+  grid-auto-flow: column dense;
+  gap: 5px;
   margin: 25px 0;
 }

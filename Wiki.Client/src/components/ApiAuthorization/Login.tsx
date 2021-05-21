@@ -1,5 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
+
+import LoadingBouncer from 'meiko/LoadingBouncer';
+
 import authService from './AuthorizeService';
 import { AuthenticationResultStatus, AuthState } from './AuthorizeService';
 import {
@@ -65,12 +68,14 @@ export class Login extends Component<LoginProps, LoginState> {
     } else {
       switch (action) {
         case LoginActions.Login:
-          return <div>Processing login</div>;
         case LoginActions.LoginCallback:
-          return <div>Processing login callback</div>;
         case LoginActions.Profile:
         case LoginActions.Register:
-          return <div></div>;
+          return (
+            <div>
+              <LoadingBouncer />
+            </div>
+          );
         default:
           throw new Error(`Invalid action '${action}'`);
       }

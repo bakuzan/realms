@@ -55,6 +55,7 @@ function RelatedFragments(props: RelatedFragmentsProps) {
 
                     return (
                       <RealmsLink
+                        key={x.id}
                         className={classNames('realm-fragment', {
                           'realm-fragment--prev': isPrev,
                           'realm-fragment--next': isNext

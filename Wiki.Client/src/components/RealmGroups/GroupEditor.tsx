@@ -48,7 +48,7 @@ export default function GroupEditor(props: GroupEditorProps) {
       entries
     });
   }
-  console.log('GroupEditor > ', props.data, errors);
+
   return (
     <li className="group-editor">
       <div className="group-editor__meta-controls">

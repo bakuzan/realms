@@ -15,8 +15,6 @@ interface RealmGroupsProps {
 }
 
 export default function RealmGroups(props: RealmGroupsProps) {
-  console.log(' RealmGroups >> ', props, props.data);
-
   return props.onChange ? (
     <React.Fragment>
       <TitleSeparator title="Fragment Map" />

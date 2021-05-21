@@ -75,7 +75,7 @@ export class LoginMenu extends Component<LoginMenuProps, LoginMenuState> {
       <Fragment>
         <li>
           <NavLink className="nav-menu__link" to={profilePath}>
-            Hello {userName}
+            {userName.split('@')[0]}
           </NavLink>
         </li>
         <li>

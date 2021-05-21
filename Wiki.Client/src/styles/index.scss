@@ -15,6 +15,15 @@ main {
     align-items: center;
   }
 
+  &__title {
+    margin: 1rem 0;
+  }
+
+  &__subtitle {
+    margin: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+
   &__action-bar {
     display: flex;
     align-items: center;
@@ -29,11 +38,41 @@ main {
 
 .button-group.button-group {
   justify-content: flex-start;
-  margin: 25px 0;
+  margin: auto 0;
   box-sizing: border-box;
+
+  > * {
+    margin: 0 5px;
+    min-width: 40px;
+    min-height: 0;
+  }
+}
+
+.rlm-false-link.rlm-false-link {
+  padding: 0;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background: none !important;
+    border: none;
+  }
+
+  &::after {
+    display: none !important;
+  }
+}
+
+.user-message {
+  margin: 1rem;
 }
 
 // Overrides
 .tag-cloud__actions {
   display: none !important;
+}
+
+.mko-grid__no-items {
+  line-height: 1.5;
+  white-space: pre-line;
 }

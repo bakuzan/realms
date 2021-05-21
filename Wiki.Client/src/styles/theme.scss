@@ -81,7 +81,8 @@ input {
     }
   }
 
-  .realms-link {
+  .realms-link,
+  .rlm-false-link.rlm-false-link {
     color: var(--primary-colour);
     text-decoration: none;
 

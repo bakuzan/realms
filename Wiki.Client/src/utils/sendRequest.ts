@@ -5,7 +5,7 @@ import {
   QueryParameterNames
 } from 'src/components/ApiAuthorization/ApiAuthorizationConstants';
 import authService from 'src/components/ApiAuthorization/AuthorizeService';
-// import alertService from './alertService';
+import alertService from './alertService';
 
 const UNAUTHOURISED_ERROR = 401;
 
@@ -70,10 +70,10 @@ export default async function sendRequest<T = any>(
       } else if (!isUnauthorised) {
         console.log('Bad response, Not 401', response);
         authService.clearStaleState();
-        // alertService.showError(
-        //   `Request was unsuccessful.`,
-        //   `${response.status}: ${response.statusText}`
-        // );
+        alertService.showError(
+          `Request was unsuccessful.`,
+          `${response.status}: ${response.statusText}`
+        );
       }
 
       return { data: null, errorMessages: [error], success: false };
@@ -86,7 +86,7 @@ export default async function sendRequest<T = any>(
       : { data, errorMessages: [], success: true };
   } catch (error) {
     console.log('Request error', error);
-    // alertService.showError(`Request failed.`, error.message);
+    alertService.showError(`Request failed.`, error.message);
 
     return { data: null, errorMessages: [error.message], success: false };
   }

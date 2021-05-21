@@ -4,7 +4,6 @@ namespace Wiki.ViewModels.Fragment
 {
     public class FragmentRelationViewModel : FragmentItemViewModel
     {
-        public string RealmCode { get; set; }
         public string ShardCode { get; set; }
         public string ShardName { get; set; }
         public FragmentRelation FragmentRelation { get; set; }
