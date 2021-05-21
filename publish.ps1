@@ -11,7 +11,7 @@ $user_input = Read-Host -Prompt "Do you want to release Realms after publishing?
 Write-Host "";
 
 $release = $false;
-$src = Join-Path (Get-ScriptDirectory) "\bin\Release\netcoreapp3.1\publish\*";
+$src = Join-Path (Get-ScriptDirectory) "\bin\Release\net5.0\publish\*";
 $dst = "C:\inetpub\wwwroot\realms";
 
 if (@("true", "false", "yes", "no", "y", "n") -contains $user_input) {
