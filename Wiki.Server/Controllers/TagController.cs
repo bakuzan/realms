@@ -37,6 +37,13 @@ namespace Wiki.Controllers
             return await _tagService.GetFragmentTagsInRealm(User, realmCode);
         }
 
+        [HttpGet]
+        [Route("{action}/{realmCode}")]
+        public async Task<List<TagCountedModel>> GetFragmentTagsInRealmCounted(string realmCode)
+        {
+            return await _tagService.GetFragmentTagsInRealmCounted(User, realmCode);
+        }
+
         [HttpPost]
         [Route("{action}")]
         public async Task<TagRelatedEntitiesResponse> GetRealmsWithTags(TagRelatedEntitiesRequest request)

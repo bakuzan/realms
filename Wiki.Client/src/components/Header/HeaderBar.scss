@@ -1,8 +1,10 @@
-.application-header {
+.application-header.application-header {
   position: relative;
   padding: 0 5px;
   box-sizing: border-box;
+}
 
+.application-header {
   &__links-block {
     display: flex;
     height: 100%;

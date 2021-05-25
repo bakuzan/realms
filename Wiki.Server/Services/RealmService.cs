@@ -283,7 +283,7 @@ namespace Wiki.Services
                         {
                             frag.EntryOrder = shard.IsOrdered
                                 ? shardFragmentIds.IndexOf(frag.FragmentId)
-                                : null;
+                                : (int?)null;
 
                             _realmDataService.SetToPersist(frag);
                         }
@@ -300,7 +300,7 @@ namespace Wiki.Services
                     {
                         var newFragEntry = new RealmShardEntry
                         {
-                            EntryOrder = shard.IsOrdered ? shardFragmentIds.IndexOf(inputFrag.FragmentId) : null,
+                            EntryOrder = shard.IsOrdered ? shardFragmentIds.IndexOf(inputFrag.FragmentId) : (int?)null,
                             FragmentId = inputFrag.FragmentId
                         };
 
@@ -341,7 +341,7 @@ namespace Wiki.Services
                 {
                     var entry = new RealmShardEntry
                     {
-                        EntryOrder = newRealmShard.IsOrdered ? entryOrder++ : null,
+                        EntryOrder = newRealmShard.IsOrdered ? entryOrder++ : (int?)null,
                         FragmentId = frag.FragmentId,
                     };
 

@@ -67,7 +67,13 @@ function RealmPage(props: RealmPageProps) {
                   '/:realmCode/new-fragment',
                   '/:realmCode/:fragmentCode/edit'
                 ]}
-                render={(fp) => <FragmentFormView {...fp} data={response} />}
+                render={(fp) => (
+                  <FragmentFormView
+                    {...fp}
+                    data={response}
+                    onUpdate={fetchRealmView}
+                  />
+                )}
               />
               <Route
                 path="/:realmCode/:fragmentCode"

@@ -23,10 +23,11 @@ interface TagPageProps extends PageProps<{ realmCode?: string }> {}
 
 function TagPage(props: TagPageProps) {
   const { realmCode } = props.match.params;
+  const isFragments = !!realmCode;
 
   const searchParams = constructObjectFromSearchParams(props.location.search);
   const tagCode = searchParams['tag'];
-  const tagPageTitle = realmCode ? `Fragments for Tags` : 'Realms for Tags';
+  const tagPageTitle = isFragments ? `Fragments for Tags` : 'Realms for Tags';
 
   const state = useAsync(
     async () =>
@@ -55,8 +56,8 @@ function TagPage(props: TagPageProps) {
               <div>
                 <h2 className="page__title">{tagPageTitle}</h2>
                 <p className="page__subtitle">
-                  Showing{' '}
-                  {realmCode ? (
+                  Showing {items.length}{' '}
+                  {isFragments ? (
                     <React.Fragment>
                       fragments in{' '}
                       <RealmsLink exact to={`/${realmCode}`}>
@@ -80,7 +81,9 @@ function TagPage(props: TagPageProps) {
             </header>
             <Grid
               className={classNames('tag-related-items', {
-                'tag-related-items--empty': isEmpty
+                'tag-related-items--empty': isEmpty,
+                'tag-related-items--realm': !isFragments,
+                'tag-related-items--fragment': isFragments
               })}
               items={items}
               noItemsText={noItemsText}

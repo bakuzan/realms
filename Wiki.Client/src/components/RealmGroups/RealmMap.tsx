@@ -7,7 +7,7 @@ import RealmsLink from 'src/components/RealmsLink';
 
 import { RealmShard, RealmShardEntry } from 'src/interfaces/RealmShard';
 
-const noGroupsText = `This realm is devoid of fragments...
+const noFragmentsText = `This realm is devoid of fragments...
 When you add new fragments, they will appear here.`;
 
 const noItemsText = 'Group contains no fragments.';
@@ -70,14 +70,17 @@ function RealmMap(props: RealmMapProps) {
   const groups = props.data.filter((x) => x.id !== 0);
   const remainder = props.data.find((x) => x.id === 0);
 
+  const hasNoFragments =
+    groups.length === 0 &&
+    (remainder === undefined || remainder.entries.length === 0);
+
   return (
     <div className="realm-map">
       <h3 className="realm-map__title">Fragments</h3>
-      <Grid
-        className="realm-map__items"
-        items={groups}
-        noItemsText={noGroupsText}
-      >
+      {hasNoFragments && (
+        <p className="realm-map__no-items">{noFragmentsText}</p>
+      )}
+      <Grid className="realm-map__items" items={groups} noItemsText={false}>
         {(group: RealmShard) => (
           <MapItem key={group.id} baseUrl={props.baseUrl} data={group} />
         )}

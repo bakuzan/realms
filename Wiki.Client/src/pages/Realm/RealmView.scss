@@ -1,0 +1,9 @@
+.realm-tags {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 70% 30%;
+
+  &__block {
+    margin-bottom: 25px;
+  }
+}

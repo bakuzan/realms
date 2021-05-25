@@ -12,6 +12,9 @@ namespace Wiki.Mapping
             CreateMap<Tag, TagViewModel>();
             CreateMap<Tag, TagDropdownModel>();
 
+            CreateMap<Tag, TagCountedModel>()
+              .ForMember(d => d.Count, s => s.MapFrom(x => x.Fragments.Count));
+
             CreateMap<Realm, TagRelatedItem>()
                 .ForMember(d => d.FragmentCount, s => s.MapFrom(x => x.Fragments.Count))
                 .ForMember(d => d.TagScope, s => s.MapFrom(x => TagScope.Realm));

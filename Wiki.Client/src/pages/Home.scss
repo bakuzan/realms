@@ -8,8 +8,8 @@
 
 .realms {
   gap: 5px;
-  grid-auto-flow: column dense;
-  grid-auto-rows: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   min-height: 350px;
 }
 

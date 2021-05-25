@@ -18,6 +18,10 @@ export interface TagOption {
   name: string;
 }
 
+export interface TagOptionWithCount extends TagOption {
+  count: number;
+}
+
 export interface TagRelatedItem {
   id: number;
   code: string;

@@ -21,6 +21,7 @@ import { PageProps } from 'src/interfaces/PageProps';
 interface FragmentFormViewProps
   extends PageProps<{ realmCode: string; fragmentCode?: string }> {
   data: RealmView;
+  onUpdate: () => void;
 }
 
 type FragmentEditorAction =
@@ -113,6 +114,7 @@ function FragmentFormView(props: FragmentFormViewProps) {
     });
 
     if (response.success) {
+      props.onUpdate();
       props.history.push(`/${realmCode}/${response.data.code}`);
     } else {
       dispatch({
