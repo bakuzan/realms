@@ -42,20 +42,21 @@ function RealmViewPage(props: RealmViewProps) {
       <Helmet title={`Hub`} />
       <header className="page__header">
         <h2 className="page__title">{realmName} Hub</h2>
-        <GuardWithAuthorisation
-          isPrivate={data.isPrivate}
-          ownerUserId={data.realmOwnerUserId}
-        >
-          <div className="button-group">
+
+        <div className="button-group">
+          <GuardWithAuthorisation
+            isPrivate={data.isPrivate}
+            ownerUserId={data.realmOwnerUserId}
+          >
             <RealmsLink to={`${props.match.url}/edit`}>Edit</RealmsLink>
-            <Button
-              className="rlm-false-link"
-              onClick={() => props.history.goBack()}
-            >
-              Back
-            </Button>
-          </div>
-        </GuardWithAuthorisation>
+          </GuardWithAuthorisation>
+          <Button
+            className="rlm-false-link"
+            onClick={() => props.history.goBack()}
+          >
+            Back
+          </Button>
+        </div>
       </header>
       <div className="page__action-bar">
         <div className="flex-spacer"></div>

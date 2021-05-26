@@ -52,20 +52,20 @@ function FragmentViewPage(props: FragmentViewProps) {
                   realm
                 </p>
               </div>
-              <GuardWithAuthorisation
-                isPrivate={realm.isPrivate}
-                ownerUserId={realm.realmOwnerUserId}
-              >
-                <div className="button-group">
+              <div className="button-group">
+                <GuardWithAuthorisation
+                  isPrivate={realm.isPrivate}
+                  ownerUserId={realm.realmOwnerUserId}
+                >
                   <RealmsLink to={`${props.match.url}/edit`}>Edit</RealmsLink>
-                  <Button
-                    className="rlm-false-link"
-                    onClick={() => props.history.goBack()}
-                  >
-                    Back
-                  </Button>
-                </div>
-              </GuardWithAuthorisation>
+                </GuardWithAuthorisation>
+                <Button
+                  className="rlm-false-link"
+                  onClick={() => props.history.goBack()}
+                >
+                  Back
+                </Button>
+              </div>
             </header>
             <div className="page-grid">
               <div className="page-grid__core">

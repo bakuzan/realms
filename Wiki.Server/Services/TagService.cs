@@ -34,6 +34,7 @@ namespace Wiki.Services
         {
             var tags = await _tagDataService
                 .GetTagsForScopeQuery(TagScope.Realm)
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
             return _mapper.Map<List<TagDropdownModel>>(tags);
@@ -57,6 +58,7 @@ namespace Wiki.Services
             var tags = await _tagDataService
                 .GetTagsForScopeQuery(TagScope.Fragment)
                 .Where(x => x.Fragments.Any(f => f.RealmId == realm.Id))
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
             return _mapper.Map<List<TagDropdownModel>>(tags);
@@ -81,6 +83,7 @@ namespace Wiki.Services
                 .GetTagsForScopeQuery(TagScope.Fragment)
                 .Include(x => x.Fragments)
                 .Where(x => x.Fragments.Any(f => f.RealmId == realm.Id))
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
             return _mapper.Map<List<TagCountedModel>>(tags);

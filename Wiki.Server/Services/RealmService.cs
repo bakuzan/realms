@@ -33,7 +33,10 @@ namespace Wiki.Services
 
             var realms = await _realmDataService.GetRealms(userId);
 
-            return _mapper.Map<List<RealmItemViewModel>>(realms);
+            return _mapper.Map<List<RealmItemViewModel>>(realms)
+                .OrderBy(x => x.Name)
+                .ThenByDescending(x => x.FragmentCount)
+                .ToList();
         }
 
         public async Task<RealmResponse> GetRealmByCode(ClaimsPrincipal claim, string code)
@@ -217,9 +220,11 @@ namespace Wiki.Services
         {
             var fragmentIds = new List<int>();
             var data = _mapper.Map<RealmViewModel>(realm);
+            data.Tags = data.Tags
+                .OrderBy(x => x.Name)
+                .ToList();
 
             var shards = await _realmDataService.GetRealmShardsForRealm(realm.Id);
-
             foreach (var shard in shards)
             {
                 var group = _mapper.Map<RealmShardViewModel>(shard);
@@ -232,6 +237,10 @@ namespace Wiki.Services
                 fragmentIds.AddRange(entries.Select(x => x.FragmentId));
                 data.Shards.Add(group);
             }
+
+            data.Shards = data.Shards
+                .OrderBy(x => x.Name)
+                .ToList();
 
             var remainderFragments = realm.Fragments.Where(x => !fragmentIds.Contains(x.Id));
 
