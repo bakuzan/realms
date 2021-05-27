@@ -99,19 +99,28 @@ namespace Wiki.Services
             var realms = await _realmDataService.GetRealms(userId);
 
             // Realms for these tags
-            var tags = await _tagDataService
+            var tagOptions = await _tagDataService
                 .GetTagsForScopeQuery(TagScope.Realm)
                 .Include(x => x.Realms)
-                .Where(x => request.TagCodes.Contains(x.Code))
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            var realmIds = tags
-                .SelectMany(x => x.Realms.Select(r => r.Id))
-                .Distinct()
+            var tags = tagOptions
+                .Where(x => request.TagCodes.Contains(x.Code))
+                .ToList();
+
+            var tagRealmIds = tags.SelectMany(x => x.Realms.Select(r => r.Id)).Distinct();
+            var realmIds = tagRealmIds
+                .Where(x => tags.All(t => t.Realms.Any(r => r.Id == x)))
                 .ToList();
 
             response.Data.Tags = _mapper.Map<List<TagDropdownModel>>(tags);
-            response.Data.Items = _mapper.Map<List<TagRelatedItem>>(realms.Where(r => realmIds.Contains(r.Id)));
+            response.Data.TagOptions = _mapper.Map<List<TagDropdownModel>>(tagOptions);
+            response.Data.Items = _mapper.Map<List<TagRelatedItem>>(
+                realms
+                    .Where(r => realmIds.Contains(r.Id))
+                    .OrderBy(r => r.Name)
+            );
 
             return response;
         }
@@ -133,21 +142,25 @@ namespace Wiki.Services
             }
 
             // Fragments for these tags
-            var tags = await _tagDataService
+            var tagOptions = await _tagDataService
                 .GetTagsForScopeQuery(TagScope.Fragment)
                 .Include(x => x.Fragments).ThenInclude(x => x.Realm)
-                .Where(x =>
-                    request.TagCodes.Contains(x.Code)
-                    && x.Fragments.Any(f => f.RealmId == realm.Id))
+                .Where(x => x.Fragments.Any(f => f.RealmId == realm.Id))
+                .OrderBy(x => x.Name)
                 .ToListAsync();
 
-            var fragments = tags
-                .SelectMany(x => x.Fragments)
-                .Distinct()
+            var tags = tagOptions
+                .Where(x => request.TagCodes.Contains(x.Code))
+                .ToList();
+
+            var tagFragments = tags.SelectMany(x => x.Fragments).Distinct();
+            var fragments = tagFragments
+                .Where(x => tags.All(t => t.Fragments.Any(f => f.Id == x.Id)))
                 .ToList();
 
             response.Data.RealmName = realm.Name;
             response.Data.Tags = _mapper.Map<List<TagDropdownModel>>(tags);
+            response.Data.TagOptions = _mapper.Map<List<TagDropdownModel>>(tagOptions);
             response.Data.Items = _mapper.Map<List<TagRelatedItem>>(fragments);
 
             return response;

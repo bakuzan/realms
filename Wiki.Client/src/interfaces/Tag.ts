@@ -34,5 +34,6 @@ export interface TagRelatedItem {
 export interface WithTagsResponse {
   realmName?: string;
   tags: Tag[];
+  tagOptions: TagOption[];
   items: TagRelatedItem[];
 }

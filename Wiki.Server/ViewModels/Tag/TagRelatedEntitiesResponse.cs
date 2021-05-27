@@ -17,12 +17,14 @@ namespace Wiki.ViewModels.Tag
     {
         public string RealmName { get; set; }
         public List<TagDropdownModel> Tags { get; set; }
+        public List<TagDropdownModel> TagOptions { get; set; }
         public List<TagRelatedItem> Items { get; set; }
 
 
         public TagRelatedEntities()
         {
             Tags = new List<TagDropdownModel>();
+            TagOptions = new List<TagDropdownModel>();
             Items = new List<TagRelatedItem>();
         }
     }
