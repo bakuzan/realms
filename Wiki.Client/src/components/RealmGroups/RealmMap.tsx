@@ -2,27 +2,27 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 
 import Grid from 'meiko/Grid';
+import { useAsync } from 'meiko/hooks/useAsync';
+import { useDebounce } from 'meiko/hooks/useDebounce';
 
+import GuardResponseState from 'src/components/GuardResponseState';
 import RealmsLink from 'src/components/RealmsLink';
 
+import sendRequest from 'src/utils/sendRequest';
+
 import { RealmShard, RealmShardEntry } from 'src/interfaces/RealmShard';
+import { FragmentMatch } from 'src/interfaces/Fragment';
 
 const noFragmentsText = `This realm is devoid of fragments...
 When you add new fragments, they will appear here.`;
 
 const noItemsText = 'Group contains no fragments.';
 
-interface RealmMapProps {
-  baseUrl: string;
-  data: RealmShard[];
-}
-
 interface MapItemProps {
-  baseUrl: string;
   data: RealmShard;
 }
 
-function MapItem({ baseUrl, data }: MapItemProps) {
+function MapItem({ data }: MapItemProps) {
   const [highlightIndex, setHighlightIndex] = useState(-1);
 
   return (
@@ -54,7 +54,7 @@ function MapItem({ baseUrl, data }: MapItemProps) {
             >
               <RealmsLink
                 className="realm-fragment realm-fragment--go"
-                to={`${baseUrl}/${item.fragmentCode}`}
+                to={`/${item.realmCode}/${item.fragmentCode}`}
               >
                 {item.fragmentName}
               </RealmsLink>
@@ -66,7 +66,25 @@ function MapItem({ baseUrl, data }: MapItemProps) {
   );
 }
 
+export interface RealmMapProps {
+  data: RealmShard[];
+  filter: string;
+  realmCode: string;
+}
+
 function RealmMap(props: RealmMapProps) {
+  const { realmCode, filter } = props;
+  const debouncedFilter = useDebounce(filter, 600);
+
+  const state = useAsync(
+    async () =>
+      await sendRequest<FragmentMatch[]>(`/fragment/searchrealmfragments`, {
+        method: 'POST',
+        body: JSON.stringify({ realmCode, filter: debouncedFilter ?? '' })
+      }),
+    [realmCode, debouncedFilter]
+  );
+
   const groups = props.data.filter((x) => x.id !== 0);
   const remainder = props.data.find((x) => x.id === 0);
 
@@ -75,43 +93,61 @@ function RealmMap(props: RealmMapProps) {
     (remainder === undefined || remainder.entries.length === 0);
 
   return (
-    <div className="realm-map">
-      <h3 className="realm-map__title">Fragments</h3>
-      {hasNoFragments && (
-        <p className="realm-map__no-items">{noFragmentsText}</p>
-      )}
-      <Grid className="realm-map__items" items={groups} noItemsText={false}>
-        {(group: RealmShard) => (
-          <MapItem key={group.id} baseUrl={props.baseUrl} data={group} />
-        )}
-      </Grid>
-      {remainder !== undefined && (
-        <Grid
-          className={classNames('realm-remainder-fragments')}
-          items={remainder.entries}
-          noItemsText={false}
-        >
-          {(item: RealmShardEntry) => {
-            return (
-              <li
-                key={item.fragmentId}
-                className={classNames(
-                  'realm-group__item',
-                  'realm-group__item--remainder'
+    <GuardResponseState loadingDelay={500} state={state}>
+      {(response) => {
+        const matched = new Set(response.map((x) => x.id));
+        const filteredGroups = groups
+          .map((g) => ({
+            ...g,
+            entries: g.entries.filter((e) => matched.has(e.fragmentId))
+          }))
+          .filter((g) => g.entries.length > 0);
+
+        return (
+          <div className="realm-map">
+            <h3 className="realm-map__title">Fragments</h3>
+            {hasNoFragments && (
+              <p className="realm-map__no-items">{noFragmentsText}</p>
+            )}
+            <Grid
+              className="realm-map__items"
+              items={filteredGroups}
+              noItemsText={false}
+            >
+              {(group: RealmShard) => <MapItem key={group.id} data={group} />}
+            </Grid>
+            {remainder !== undefined && (
+              <Grid
+                className={classNames('realm-remainder-fragments')}
+                items={remainder.entries.filter((e) =>
+                  matched.has(e.fragmentId)
                 )}
+                noItemsText={false}
               >
-                <RealmsLink
-                  className="realm-fragment realm-fragment--go"
-                  to={`${props.baseUrl}/${item.fragmentCode}`}
-                >
-                  {item.fragmentName}
-                </RealmsLink>
-              </li>
-            );
-          }}
-        </Grid>
-      )}
-    </div>
+                {(item: RealmShardEntry) => {
+                  return (
+                    <li
+                      key={item.fragmentId}
+                      className={classNames(
+                        'realm-group__item',
+                        'realm-group__item--remainder'
+                      )}
+                    >
+                      <RealmsLink
+                        className="realm-fragment realm-fragment--go"
+                        to={`/${item.realmCode}/${item.fragmentCode}`}
+                      >
+                        {item.fragmentName}
+                      </RealmsLink>
+                    </li>
+                  );
+                }}
+              </Grid>
+            )}
+          </div>
+        );
+      }}
+    </GuardResponseState>
   );
 }
 

@@ -12,6 +12,8 @@ namespace Wiki.Services
         Task<FragmentDetailResponse> GetFragmentDetail(ClaimsPrincipal claim, string code);
         Task<FragmentCreateUpdateResponse> CreateFragment(ClaimsPrincipal claim, FragmentCreateRequest request);
         Task<FragmentCreateUpdateResponse> UpdateFragment(ClaimsPrincipal claim, FragmentUpdateRequest request);
+        Task<FragmentMatchResponse> GetFilterMatchedFragments(ClaimsPrincipal claim, string code, string filter);
+
 
     }
 }

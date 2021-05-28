@@ -32,3 +32,8 @@ export interface RelatedFragment {
 export interface FragmentDetailView extends FragmentView {
   relatedFragments: RelatedFragment[];
 }
+
+export interface FragmentMatch {
+  id: number;
+  code: string;
+}

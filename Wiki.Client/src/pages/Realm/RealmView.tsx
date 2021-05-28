@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Button } from 'meiko/Button';
+import ClearableInput from 'meiko/ClearableInput';
 import TagCloudSelector from 'meiko/TagCloudSelector';
 import { useAsync } from 'meiko/hooks/useAsync';
 
@@ -23,6 +24,8 @@ interface RealmViewProps extends PageProps<{ realmCode: string }> {
 }
 
 function RealmViewPage(props: RealmViewProps) {
+  const [filter, setFilter] = useState('');
+
   const { data } = props;
   const realmName = data.name;
   const realmCode = data.code;
@@ -59,6 +62,16 @@ function RealmViewPage(props: RealmViewProps) {
         </div>
       </header>
       <div className="page__action-bar">
+        <ClearableInput
+          id="filter"
+          name="filter"
+          value={filter}
+          label="Filter fragments"
+          placeholder="Enter text to filter on fragments on name, content, or tags"
+          aria-label="Enter text to filter on fragments on name, content, or tags"
+          onKeyPress={(e) => e.stopPropagation()}
+          onChange={(e) => setFilter(e.currentTarget?.value ?? '')}
+        />
         <div className="flex-spacer"></div>
         <GuardWithAuthorisation
           isPrivate={data.isPrivate}
@@ -70,7 +83,7 @@ function RealmViewPage(props: RealmViewProps) {
         </GuardWithAuthorisation>
       </div>
       <div className="page__content">
-        <RealmGroups baseUrl={props.match.url} data={data.shards} />
+        <RealmGroups realmCode={realmCode} filter={filter} data={data.shards} />
         <div className="realm-tags">
           <div className="realm-tags__block">
             <TitleSeparator title="Fragment Tags" />

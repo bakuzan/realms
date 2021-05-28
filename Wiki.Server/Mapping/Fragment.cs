@@ -28,6 +28,8 @@ namespace Wiki.Mapping
             CreateMap<FragmentCreateRequest, Fragment>();
             CreateMap<FragmentUpdateRequest, Fragment>();
 
+            CreateMap<Fragment, FragmentMatchViewModel>();
+
         }
     }
 }

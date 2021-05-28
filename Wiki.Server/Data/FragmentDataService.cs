@@ -40,5 +40,24 @@ namespace Wiki.Data
                 .ToListAsync();
         }
 
+        public async Task<List<Fragment>> FilterRealmFragments(int realmId, string filter)
+        {
+            // TODO
+            // Implement Full-Text Search
+            var terms = filter.ToLower().Split(' ');
+            var fragments = await _context.Fragments
+                .Include(x => x.Tags)
+                .Where(x => x.RealmId == realmId)
+                .ToListAsync();
+
+            return fragments
+                .Where(x =>
+                    string.IsNullOrEmpty(filter)
+                    || terms.All(t => x.Name.ToLower().Contains(t))
+                    || terms.All(t => x.Content.ToLower().Contains(t))
+                    || x.Tags.Any(tag => terms.All(t => tag.Name.ToLower().Contains(t)))
+                ).ToList();
+        }
+
     }
 }

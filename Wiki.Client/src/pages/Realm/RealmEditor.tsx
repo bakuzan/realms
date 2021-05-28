@@ -162,7 +162,6 @@ function RealmEditor(props: RealmEditorProps) {
           <div className="page-grid__core">
             <div className="panel">
               <RealmGroups
-                baseUrl={realmCode}
                 data={state.shards}
                 onChange={(shards) => dispatch({ type: 'UpdateShard', shards })}
               />

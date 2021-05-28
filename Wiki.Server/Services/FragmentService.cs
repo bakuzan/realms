@@ -15,14 +15,17 @@ namespace Wiki.Services
     {
         private readonly IUserService _userService;
         private readonly IFragmentDataService _fragmentDataService;
+        private readonly IRealmDataService _realmDataService;
         private readonly IMapper _mapper;
 
         public FragmentService(IUserService userService,
                                IFragmentDataService fragmentDataService,
+                               IRealmDataService realmDataService,
                                IMapper mapper)
         {
             _userService = userService;
             _fragmentDataService = fragmentDataService;
+            _realmDataService = realmDataService;
             _mapper = mapper;
         }
 
@@ -179,6 +182,35 @@ namespace Wiki.Services
             return response;
         }
 
+        public async Task<FragmentMatchResponse> GetFilterMatchedFragments(ClaimsPrincipal claim, string code, string filter)
+        {
+            var response = new FragmentMatchResponse();
+
+            var user = await _userService.GetCurrentUser(claim);
+            var userId = user == null ? string.Empty : user.Id;
+
+            var realm = await _realmDataService.GetRealmAsync(code);
+
+            if (realm == null)
+            {
+                response.ErrorMessages.Add($"Realm(code: {code}) was not found.");
+            }
+            else if (realm.IsAuthenticationRestricted && claim == null)
+            {
+                response.ErrorMessages.Add($"Realm(code: {code}) requires you to be authenticated to view it.");
+            }
+            else if (realm.IsPrivate && realm.ApplicationUserId != userId)
+            {
+                response.ErrorMessages.Add($"Realm(code: {code}) is a private realm.");
+            }
+            else
+            {
+                var fragments = await _fragmentDataService.FilterRealmFragments(realm.Id, filter);
+                response.Data = _mapper.Map<List<FragmentMatchViewModel>>(fragments);
+            }
+
+            return response;
+        }
 
         #region Private
 

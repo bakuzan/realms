@@ -11,8 +11,7 @@ import GroupEditor, { FragmentContext } from './GroupEditor';
 
 import { RealmShard, RealmShardEntry } from 'src/interfaces/RealmShard';
 
-interface RealmMapEditorProps {
-  baseUrl: string;
+export interface RealmMapEditorProps {
   data: RealmShard[];
   onChange: (data: RealmShard[]) => void;
 }

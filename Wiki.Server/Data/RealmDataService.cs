@@ -39,7 +39,7 @@ namespace Wiki.Data
         public async Task<Realm> GetRealmAsync(string code)
         {
             return await _context.Realms
-                .Include(x => x.Fragments)
+                .Include(x => x.Fragments).ThenInclude(x => x.Realm)
                 .Include(x => x.Tags)
                 .FirstOrDefaultAsync(x => x.Code == code);
         }
@@ -47,7 +47,7 @@ namespace Wiki.Data
         public async Task<List<RealmShard>> GetRealmShardsForRealm(int realmId)
         {
             return await _context.RealmShards
-                .Include(x => x.RealmShardEntries).ThenInclude(x => x.Fragment)
+                .Include(x => x.RealmShardEntries).ThenInclude(x => x.Fragment).ThenInclude(x => x.Realm)
                 .Where(x => x.RealmId == realmId)
                 .ToListAsync();
         }

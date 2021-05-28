@@ -4,6 +4,7 @@ export interface RealmShardEntry {
   fragmentId: number;
   fragmentName: string;
   fragmentCode: string;
+  realmCode: string;
 }
 
 export interface RealmShard {

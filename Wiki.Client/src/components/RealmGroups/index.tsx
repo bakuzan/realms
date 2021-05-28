@@ -1,21 +1,15 @@
 import React from 'react';
 
 import TitleSeparator from 'src/components/TitleSeparator';
-import RealmMap from './RealmMap';
-import RealmMapEditor from './RealmMapEditor';
-
-import { RealmShard } from 'src/interfaces/RealmShard';
+import RealmMap, { RealmMapProps } from './RealmMap';
+import RealmMapEditor, { RealmMapEditorProps } from './RealmMapEditor';
 
 import './RealmGroups.scss';
 
-interface RealmGroupsProps {
-  baseUrl: string;
-  data: RealmShard[];
-  onChange?: (data: RealmShard[]) => void;
-}
+type RealmGroupsProps = RealmMapProps | RealmMapEditorProps;
 
 export default function RealmGroups(props: RealmGroupsProps) {
-  return props.onChange ? (
+  return 'onChange' in props ? (
     <React.Fragment>
       <TitleSeparator title="Fragment Map" />
       <RealmMapEditor {...props} onChange={props.onChange} />

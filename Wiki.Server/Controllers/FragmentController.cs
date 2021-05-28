@@ -52,5 +52,12 @@ namespace Wiki.Controllers
             return await _fragmentService.UpdateFragment(User, request);
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<FragmentMatchResponse> SearchRealmFragments(FragmentMatchRequest request)
+        {
+            return await _fragmentService.GetFilterMatchedFragments(User, request.RealmCode, request.Filter);
+        }
+
     }
 }

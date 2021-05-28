@@ -18,12 +18,14 @@ namespace Wiki.Mapping
 
             CreateMap<RealmShardEntry, RealmShardEntryViewModel>()
                 .ForMember(d => d.FragmentName, s => s.MapFrom(x => x.Fragment.Name))
-                .ForMember(d => d.FragmentCode, s => s.MapFrom(x => x.Fragment.Code));
+                .ForMember(d => d.FragmentCode, s => s.MapFrom(x => x.Fragment.Code))
+                .ForMember(d => d.RealmCode, s => s.MapFrom(x => x.Fragment.Realm.Code));
 
             CreateMap<Fragment, RealmShardEntryViewModel>()
                 .ForMember(d => d.FragmentId, s => s.MapFrom(x => x.Id))
                 .ForMember(d => d.FragmentName, s => s.MapFrom(x => x.Name))
-                .ForMember(d => d.FragmentCode, s => s.MapFrom(x => x.Code));
+                .ForMember(d => d.FragmentCode, s => s.MapFrom(x => x.Code))
+                .ForMember(d => d.RealmCode, s => s.MapFrom(x => x.Realm.Code));
 
             CreateMap<RealmCreateRequest, Realm>();
             CreateMap<RealmUpdateRequest, Realm>();
