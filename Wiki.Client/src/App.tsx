@@ -18,23 +18,28 @@ import AuthorizeRoute from './components/ApiAuthorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/ApiAuthorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/ApiAuthorization/ApiAuthorizationConstants';
 import Alert from 'src/components/Alert';
+
+import { useStorage } from 'src/hooks/useStorage';
+import { ThemeContext } from './context';
 import { AppName } from './constants';
 
 import './styles/index.scss';
 import './styles/theme.scss';
 
 function App() {
+  const [isDarkTheme, onThemeToggle] = useStorage('isDarkTheme');
   useGlobalStyles();
 
   return (
     <div
       className={classNames('theme', {
-        'theme--alt': false,
-        'theme--default': true
+        'theme--dark': isDarkTheme
       })}
     >
       <Helmet defaultTitle={AppName} titleTemplate={`%s | ${AppName}`} />
-      <HeaderBar />
+      <ThemeContext.Provider value={{ isDarkTheme, onThemeToggle }}>
+        <HeaderBar />
+      </ThemeContext.Provider>
       <Alert />
       <main>
         <Switch>

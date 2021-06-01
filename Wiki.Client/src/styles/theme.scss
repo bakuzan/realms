@@ -10,6 +10,8 @@ $red: #f00;
 $tyrian: #66023c;
 $purple: #df73ff;
 $gold: #ffcc33;
+$vermillion: #e7584b; //#e34234;
+$jade: #00a86b;
 
 :root {
   --base-background: #{$white};
@@ -38,6 +40,28 @@ $gold: #ffcc33;
 
   --danger-colour: #{$red};
   --danger-colour-hover: #{darken($red, 10%)};
+}
+
+.theme--dark {
+  --base-background: #{$onyx};
+  --base-background-hover: #{lighten($onyx, 10%)};
+
+  --base-colour: #{$white};
+  --base-colour-hover: #{darken($white, 10%)};
+
+  --primary-colour: #{$vermillion};
+  --primary-colour-hover: #{lighten($vermillion, 10%)};
+
+  --primary-contrast: #000;
+  --primary-contrast-hover: #{lighten(#000, 10%)};
+
+  --accent-colour: #{$jade};
+  --accent-colour-hover: #{lighten($jade, 10%)};
+
+  --accent-contrast: #{$white};
+  --accent-contrast-hover: #{darken($white, 10%)};
+
+  --highlight: #{$tyrian};
 }
 
 input {
