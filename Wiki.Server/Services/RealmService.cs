@@ -242,7 +242,9 @@ namespace Wiki.Services
                 .OrderBy(x => x.Name)
                 .ToList();
 
-            var remainderFragments = realm.Fragments.Where(x => !fragmentIds.Contains(x.Id));
+            var remainderFragments = realm.Fragments
+                .Where(x => !fragmentIds.Contains(x.Id))
+                .OrderBy(x => x.Name);
 
             if (remainderFragments.Any())
             {
